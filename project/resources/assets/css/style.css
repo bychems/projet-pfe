@@ -1,0 +1,52 @@
+h3{
+    background: #F5F5F5;
+    border-radius: 7px;
+    padding: 10px 20px;
+    font-size: 17px !important;
+    text-transform: uppercase;
+    border: 1px solid rgba(221, 221, 221, 0.86);
+    margin-top: 35px !important;
+}
+
+.rows .row {
+    margin-bottom: 20px;
+}
+
+.haut{
+    margin-top: 25px;
+}
+.option {
+    padding:6px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f5f5f5;
+}
+
+.hidden{
+    display:none;
+}
+
+p{
+    padding:6px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #D8D8D8;
+}
+.btn-info.add-option {
+    margin-top: 25px;
+}
+.btn.btn-info.nouvelle_option {
+    visibility:hidden;
+}
+.options-add-form:hover .nouvelle_option{
+    visibility:visible;
+}
+
+.contenu
+{
+    background: rgba(255, 255, 255, 0.29);
+    height: 500px;
+    width: 800px;
+    max-width: 95%;
+
+}

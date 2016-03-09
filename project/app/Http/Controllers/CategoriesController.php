@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Option;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Category;
+use App\Option;
 class CategoriesController extends Controller
 {
     /**
@@ -18,19 +17,16 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $opp = array();
-
-        $categories = Category::all();
-        $title = "Categories-Option";
+       $opp = array();
+       
+        $categories = Category::orderBy('id', 'DESC')->get();
+        $title = "Catégories";
         $options = Option::all();
         foreach ($options as $o) {
-            $opp[$o->category_id][$o->id]['nom'] = $o->name_option;
-            $opp[$o->category_id][$o->id]['desc'] = $o->description_option;
-            $opp[$o->category_id][$o->id]['id'] = $o->category_id;
-
+            $opp[$o->category_id][$o->id] = $o;
         }
-
-        return view('add_option_category', ['title' => $title, 'categories' => $categories, 'opp' => $opp]);
+      
+        return view('Categories/categories', ['title' => $title, 'categories' => $categories, 'opp' => $opp]);
     }
 
     /**
@@ -51,26 +47,28 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //--ADD NEW CATEGORY
-        $createCategory=Category::create($request->only(['name_category'=>'name_category']));
-
-        //--GET ID CATEGORY ADDED
-        $lastCatId = $createCategory->id;
-        //dd($request);
-
-        $nb_op=intval($request->tab_option);
-
-        for($i=0;$i<$nb_op;$i++){
-            $x='name-option-'.$i;
-            $y='description-option-'.$i;
-            $option=new Option();
-            $option->name_option=$request->$x;
-            $option->description_option=$request->$y;
-            $option->category_id=$lastCatId;
+        //
+        
+         //   dd($request);
+         $createCategorie=Category::create($request->only(['name_category']));
+         $IdCategorie =  $createCategorie->id;
+         $nb_op = intval($request->tab_option);
+    
+         for($i=0;$i<$nb_op;$i++){
+             
+            $x = 'name_option_'.$i;
+            $y = 'description_option_'.$i;
+            $option = new Option();
+            $option->name = $request->$x;
+            $option->description =  $request->$y;
+            $option->category_id = $IdCategorie;
             $option->save();
-        }
-
-        return redirect('categories');
+            // Option::create($request->only(['name'=>'name-option-'.$i, 'description'=>'description-option-'.$i]))->attach($IdCategorie);
+            
+          }
+          
+        //dd($option);
+        return redirect(route('categoryIndex'));
     }
 
     /**
@@ -94,6 +92,27 @@ class CategoriesController extends Controller
     {
         //
     }
+    
+    public function addOpCat(Request $request)
+    {
+        
+       
+        $n=  intval($request->nb_option);
+        
+        for($i=0;$i<$n;$i++)
+         {
+            $name = "name_option_".$i;
+            $desc = "description_option_".$i;
+            $option = new Option();
+            $option->name = $request->$name;
+            $option->description = $request->$desc;
+            $option->category_id = $request->category_id;
+            $option->save();
+        
+         }
+        
+        //$option->attachCategory($request->category_id);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -113,12 +132,17 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroyCat($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+        return redirect(route('categoryIndex'));
     }
 
-    public function addOptionInCategory(){
-
+    public function destroyOpt($id)
+    {
+        $option = Option::find($id);
+        $option->delete();
+        return redirect(route('categoryIndex'));
     }
 }

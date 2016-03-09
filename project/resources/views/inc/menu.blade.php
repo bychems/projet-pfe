@@ -11,11 +11,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{route('addcarIndex')}}">Ajout Voiture</a></li>
-                <li><a href="{{route('listCars')}}">Liste Voitures</a></li>
-                <li><a href="{{route('addcategorieIndex')}}">Ajout Opt Cat</a></li>
+                <li class="active"><a href="{{route('carIndex')}}">Ajout Voiture</a></li>
+                <li><a href="{{route('carList')}}">Liste Voitures</a></li>
+                <li><a href="{{route('categoryIndex')}}">Ajout Opt Cat</a></li>
                 <li><a href="{{route('addcustomerIndex')}}">Ajout Client</a></li>
                 <li><a href="{{route('listCustomers')}}">liste Clients</a></li>
+                <li><a href="{{route('testDriveIndex')}}">Test Drive</a></li>
 
             </ul>
         </div><!--/.nav-collapse -->

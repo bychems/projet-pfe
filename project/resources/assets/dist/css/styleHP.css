@@ -1,0 +1,67 @@
+.back
+{
+ background: url("../img/HP.jpg") no-repeat center center fixed;
+ position :fixed;
+ top:0;
+ right:0;
+ bottom: 0;
+ left:0;
+ z-index: -1;
+}
+.contenu
+{
+    background: rgba(0, 0, 0, 0.67);
+    height: 600px;
+    width: 800px;
+    max-width: 95%;
+    margin:100px auto;
+}
+.contenu img
+{
+    margin-top: 20px; 
+    margin-left: 25px;    
+}
+.container-fluid p
+{
+    margin-top: 20px;
+    color :#FFFFFF;
+    text-align: center;
+}
+.container-fluid h5
+{
+    margin-top: 30px;
+    color :#FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+.col-md-4 label
+{   display: block;
+    text-align: right;
+    margin-left: 180px;
+    color: #FFFFFF;
+}
+form button
+{
+    width: 100px;
+    height: 40px;
+    color: #FFFFFF;
+    background: #27B284;
+    border :0;
+    
+}
+.container-fluid form
+{
+    margin-top: 20px;
+}
+label i
+{
+    color :#27B284;
+}
+.col-md-8 input,.col-md-8 textArea
+{
+    width: 50%;
+    background: rgba(0, 0, 0, 0.70);
+    border-color:#27B284;
+}
+

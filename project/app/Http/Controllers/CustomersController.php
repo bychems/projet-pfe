@@ -21,8 +21,8 @@ class CustomersController extends Controller
     {
         $title="Ajout commercial";
 
-        return view('add_customer', ['title'=>$title]);
-        
+        return view('Customers/add_customer', ['title'=>$title]);
+
 
     }
 
@@ -45,7 +45,7 @@ class CustomersController extends Controller
     public function store(Request $request)
     {
         //--ADD NEW CUSTOMER
-       // $user::Auth
+        // $user::Auth
 
         $validator = Validator::make($request->all(), ['cin'=> 'required|unique:customers|numeric|min:8']);
         if ($validator->fails()) {
@@ -60,7 +60,7 @@ class CustomersController extends Controller
         //$newCustomer =
         // attacher client au commercial courant
         //$newCustomer->attachUser($user);
-    return redirect(route('listCustomers'));
+        return redirect(route('addcustomerIndex'));
     }
 
     /**
@@ -85,7 +85,7 @@ class CustomersController extends Controller
     {
         $title="edit commercial";
         $customer= Customer::findOrFail($id);
-        return view('edit_customer', ['title'=>$title])->withCustomer($customer);
+        return view('Customers/edit_customer', ['title'=>$title])->withCustomer($customer);
 
     }
 
@@ -98,7 +98,7 @@ class CustomersController extends Controller
      */
     public function update(Request $request, $id)
     {
-       $customer=Customer::findOrFail($id);
+        $customer=Customer::findOrFail($id);
         $input=$request->all();
         $customer->fill($input)->save();
         return redirect()->back();
@@ -120,7 +120,7 @@ class CustomersController extends Controller
 
         $customers = Customer::all();
 
-        return view('list-customers', ['title' => $title, 'customers' => $customers]);
+        return view('Customers/list-customers', ['title' => $title, 'customers' => $customers]);
     }
 
     public function affiche($id)
@@ -131,7 +131,7 @@ class CustomersController extends Controller
             $customer = Customer::findOrFail($id);
 
             $title = "Affich Client";
-            return view('customer-details', ['customer' => $customer, 'title' => $title]);
+            return view('Customers/customer-details', ['customer' => $customer, 'title' => $title]);
         }
     }
 }

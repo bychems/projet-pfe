@@ -1,0 +1,41 @@
+.navbar-brand
+{
+	background-color: #0B2161;
+}
+.navbar
+{	
+	margin-top: 20px;
+	width: 350px;
+}
+.blanc
+{
+	padding: 30px;
+}
+.khalil
+{
+	margin-left: 100px;
+
+}
+.fa
+{
+color: #0080FF;
+}
+.col-md-2 img
+{
+	width: 130px;
+    height: 50px;
+
+}
+
+iframe
+{
+	margin-top: 20px;
+}
+
+.mrgt-20
+{
+	margin-top: 20px;
+}
+.banner img {
+	max-width: 100%;
+}

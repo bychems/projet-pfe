@@ -10,11 +10,11 @@
     <title>@yield('title')</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
+    {!! HTML::style('project/resources/assets/font-awesome/css/font-awesome.min.css') !!}
+    {!! HTML::style('project/resources/assets/dist/css/bootstrap.min.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/datePicker/css/datepicker.css') !!}
     {!! HTML::style('project/resources/assets/css/style.css') !!}
-    {!! HTML::style('project/resources/assets/css/bootstrap.min.css') !!}
-    {!! HTML::style('project/resources/assets/plugins/notify/css/jquery.ambiance.css') !!}
 
     @yield('css')
 </head>

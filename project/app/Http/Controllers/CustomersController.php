@@ -71,8 +71,7 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        /*$customers = Customer::all();
-         return view('customers', ['customers'=>$customers]);*/
+        //
     }
 
     /**

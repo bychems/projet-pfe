@@ -8,6 +8,10 @@ h3{
     margin-top: 35px !important;
 }
 
+h1{
+    color: #337ab7;
+}
+
 
 .rows .row {
     margin-bottom: 20px;
@@ -15,6 +19,14 @@ h3{
 
 .haut{
     margin-top: 25px;
+}
+
+.titre_client{
+    font-weight: bold;
+}
+
+.droite{
+    float: right;
 }
 .option {
     padding:6px 15px;
@@ -75,6 +87,23 @@ p{
     background: #FFFFFF;
 }
 
+.fa.fa-pencil {
+    visibility:hidden;
+}
+.form-delete:hover .fa.fa-pencil {
+    visibility:visible;
+}
+
+.modifCat{
+    background: #F5F5F5;
+    border: 0;
+}
+
+.modifOpt{
+    background: #F5F5F5;
+    border: 0;
+}
+
 .fa-times-circle{
     color:#FF0000;
 }
@@ -82,4 +111,8 @@ p{
 
 .btn.btn-success.pull-right{
     visibility:hidden;
+}
+
+.picker-switch.accordion-toggle{
+    display:none;
 }

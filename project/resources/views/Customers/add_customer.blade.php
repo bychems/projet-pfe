@@ -20,32 +20,47 @@
     @endif
 
 
-
-    <div class="form-group">
-        {!! Form::label('','Nom') !!}
-        {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Nom') !!}
+            {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client']) !!}
+        </div>
     </div>
-    <div class="form-group">
-        {!! Form::label('','Prenom') !!}
-        {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Prenom du client']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Prenom') !!}
+            {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Prenom du client']) !!}
+        </div>
     </div>
-    <div class="form-group">
-        {!! Form::label('','Cin') !!}
-        {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Cin') !!}
+            {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN']) !!}
+        </div>
     </div>
-    <div class="form-group">
-        {!! Form::label('','Email') !!}
-        {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Email') !!}
+            {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client']) !!}
+        </div>
     </div>
-    <div class="form-group">
-        {!! Form::label('','Adresse') !!}
-        {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Adresse') !!}
+            {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client']) !!}
+        </div>
     </div>
-    <div class="form-group">
-        {!! Form::label('','Fonction') !!}<br>
-        {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client']) !!}
+    <div class="row">
+        <div class="form-group col-md-6">
+            {!! Form::label('','Fonction') !!}<br>
+            {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client']) !!}
+        </div>
     </div>
-    <button class="btn btn-success" type="submit">save</button>
+    <div class="row">
+        <div class="col-md-8">
+           <button class="btn btn-success" type="submit">save</button>
+        </div>
     </div>
+</div>
     {!! Form::close() !!}
 @stop

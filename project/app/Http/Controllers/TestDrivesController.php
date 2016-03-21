@@ -130,10 +130,16 @@ class TestDrivesController extends Controller {
 
         $dateDispo=TestDriveDay::ListDateDispo($id)->get();
 
+        $begin= $dateDispo[0]->date; // prints 1
+
+        // get the last item in the array
+        $end= $dateDispo[count($dateDispo) - 1]->date; // prints 2
 
 
-        return view('TestDrives/calendar-Test-Drive', ['title' => $title,'dateDispo'=>$dateDispo,'dispo'=>$dispo]);
+        return view('TestDrives/calendar-Test-Drive', ['title' => $title,'dateDispo'=>$dateDispo,'dispo'=>$dispo,'begin'=>$begin,'end'=>$end]);
     }
+
+
 
     public function showHours($id)
     {
@@ -152,8 +158,11 @@ class TestDrivesController extends Controller {
             $re[$hour->id] = $in;
 
         }
+
+
         $re = json_encode($re);
         return $re;
+        alert()->success('You have been logged out.', 'Good bye!');
     }
     /**
      * Remove the specified resource from storage.

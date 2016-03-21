@@ -9,7 +9,7 @@
   
 <h1>Ajouter Catégorie</h1>
 {!! Form::open(['method'=>'post', 'url'=>route('categoryStore') ])!!}
-            <div class="form-group">
+            <div class="form-group ">
                 {!! Form::label('nameL','Nom') !!}
                 {!! Form::text('name_category', '',['class'=>'form-control', 'placeholder'=>'Nom de la Catégorie']) !!}
             </div>
@@ -26,45 +26,46 @@
                     </div>
             </div>
                      <br>
-            <button class="btn btn-success" type="submit">save</button>
+            <button class="btn btn-success droite" type="submit">save</button>
  {!! Form::close()!!}
             @if(isset($categories))
                        @foreach($categories as $c)
+                           <div class="form-cat {{$c->id}}">
                         @if (isset($c))
-                            {!! Form::open(['method' => 'DELETE','class'=>'form-delete','route' => ['destroyCat', $c->id]]) !!}
-                    {!! Form::hidden('id_cat') !!}
-                                <h3 class="form-delete">
+
+                                <h3 class="form-delete ">
                                     <div class="row">
-                                        <div class="col-md-11">
-                                    Categorie : {{$c->name_category}}
+                                        <div class="col-md-10">
+                                            Categorie : {{$c->name_category}}
                                         </div>
                                         <div class="col-md-1">
-                                    <button  type="submit" class="fa fa-times-circle suppCat" data-id="{{$c->id}}"></button>
-                                            </div>
+                                            <button  class="fa fa-pencil modifCat" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button  class="fa fa-times-circle suppCat" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
+                                        </div>
                                     </div>
                                 </h3>
-                            {!! Form::close() !!}
-
 
 
                             @if (isset($opp[$c->id]))
                                @foreach($opp[$c->id] as $option)
 
-                                             <div class="row form-delete">
+                                             <div class="row form-delete op{{$option->id}}">
                                                 <div class="col-md-2">
                                                 {!! Form::label('','Option :') !!}
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3">
                                                     <p><b>Nom: </b>{{$option->name}}</p>
                                                 </div>
                                                 <div class="col-md-5">
                                                      <p><b>Déscription: </b>{{$option->description}}</p>
                                                 </div>
+                                                 <div class="col-md-1">
+                                                     <button  class="fa fa-pencil modifOpt" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
+                                                 </div>
                                                 <div class="col-md-1">
-                                                    {!! Form::open(['method' => 'DELETE','route' => ['destroyOpt', $option->id]]) !!}
-                                                    <button type="submit" class="fa fa-times-circle suppOpt"></button>
-
-                                                    {!! Form::close() !!}
+                                                    <button  class="fa fa-times-circle suppOpt" data-id="{{$option->id}}" data-token="{{ csrf_token() }}"></button>
                                                 </div>
                                             </div>
                                                       
@@ -90,6 +91,7 @@
                                    {!! Form::hidden('category_id', $c->id) !!}
                                   {!! Form::close()!!}
                             @endif
+                           </div>
                        @endforeach
                         
                     @endif
@@ -131,10 +133,18 @@
 
 @section('js')
 <script type="text/javascript">
-var route = "{{route('addoption')}}";
-DeleteRoute= "{{route('destroyCat',0)}}";
-DeleteRoute = DeleteRoute.slice(0, -1);
-console.log(DeleteRoute);
+
+
+    var route = "{{route('addoption')}}";
+
+
+    DeleteCatRoute= "{{route('destroyCat',0)}}";
+    DeleteCatRoute = DeleteCatRoute.slice(0, -1);
+
+
+    DeleteOptRoute= "{{route('destroyOpt',0)}}";
+    DeleteOptRoute = DeleteOptRoute.slice(0, -1);
+
 </script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 

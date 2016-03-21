@@ -16,4 +16,9 @@ class OptionCar extends Model
     public function cars(){
         return $this->belongsToMany('App\Car');
     }
+
+    public function scopeIdCar($query,$id)
+    {
+        return $query->where('car_id', '=', $id);
+    }
 }

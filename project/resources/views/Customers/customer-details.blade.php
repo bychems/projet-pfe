@@ -5,7 +5,7 @@
 @section('content')
 
 
-    <h1>Client: {{$customer->name}} {{$customer->last_name}}</h1>
+    <h1>Client: {{$customer->name}} {{$customer->last_name}}</h1><hr>
         <ul>
 
             <li> <strong>Cin Client:</strong>{{$customer->cin}}</li>
@@ -16,7 +16,7 @@
         </ul>
 
     <div>
-    <a href="{{route('editcustomer',$customer->id)}}"><button class="btn btn-success" type="submit">Modifier</button></a>
+    <a href="{{route('editcustomer',$customer->id)}}"><button class="btn btn-success droite" type="submit">Modifier</button></a>
     </div>
 
 

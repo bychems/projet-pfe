@@ -7,6 +7,6 @@
     <!-- main -->
     @yield('js')
     <script src="{{ url('project/resources/assets/js/jquery.form.min.js')}}"></script>
-    <script src="{{ url('project/resources/assets/plugins/datePicker/js/bootstrap-datepicker.js') }}"></script>
+
     <script src="{{ url('project/resources/assets/js/main_1.js') }}"></script>
     <!--fin js-->

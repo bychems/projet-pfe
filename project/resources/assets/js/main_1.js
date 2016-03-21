@@ -4,21 +4,6 @@
  * and open the template in the editor.
  */
 
-
-
-/*
-var person = {
-    firstName: "Christophe",
-    lastName: "Coenraets",
-    blogURL: "http://coenraets.org"
-};
-var templateRow = "<h1>{{firstName}} {{lastName}}</h1>Blog: {{blogURL}}";
-
-var html = Mustache.to_html(templateRow, person);
-$('#sampleArea').append(html);
-*/
-
-
 /* last add-cars
 $('body').on('click','.add-input', function(e){
     e.preventDefault();
@@ -35,9 +20,9 @@ $('body').on('click','.add-input', function(e){
     $('#'+id + ' .appendTo').append(row);
 
 });
-
 */
 
+////AJOUT DES CHAMPS POUR AJOUTER LE PRIX D'UNE OPTION
 $('.add-option').on('click',function(e){
   e.preventDefault();
   var id_cat=$(this).attr('data-id');
@@ -63,6 +48,7 @@ $('.add-option').on('click',function(e){
  }
 });
 
+//--------AJOUT DES CHAMPS POUR AJOUTER UNE NOUVELLE OPTION SOUS UNE NOUVELLE CATEGORIE
 $('.nouvelle_option').on('click',function(e){
   e.preventDefault();
   var amo = $(this).parent().parent().find('.new_option');
@@ -75,6 +61,8 @@ $('.nouvelle_option').on('click',function(e){
     $('input[name=tab_option]:hidden').val(amo.find('.row').length);
 });
 
+
+//--------AJOUT DES CHAMPS POUR AJOUTER UNE NOUVELLE OPTION SOUS UNE CATEGORIE EXISTANTE
 $('.option_nouvelle').on('click',function(e){
     e.preventDefault();
     var amo = $(this).parent().parent().find('.new_option');
@@ -89,10 +77,6 @@ $('.option_nouvelle').on('click',function(e){
     enregistrer.css('visibility','visible');
 });
 
-$('.suppOp').on('click',function(e){
-    e.preventDefault();
-
-});
 
 //$(el).css('visibility', 'hidden');
 //$(el).css('visibility', 'visible');
@@ -117,7 +101,10 @@ PARENT.append('fils'); -> <parent> fils </parent>
 $('.form-options').on('submit', function(e){
     var amo = $(this).find('.new_option');
     var parent = $(this).find('.ajax');
+    var enregistrer=$(this).find('.pull-right');
+    enregistrer.css('visibility','hidden');
     e.preventDefault();
+
     var x  = $( this ).serialize();
 
     $.ajax({
@@ -126,7 +113,6 @@ $('.form-options').on('submit', function(e){
         data: x,
         dataType: 'text',
         success: function(response) {
-            
             amo.children('.row').each(function(){
                 var x = $(this).find('input').val();
                 var y = $(this).find('textarea').val();
@@ -138,74 +124,19 @@ $('.form-options').on('submit', function(e){
         }
     });
 });
-
-
 function cloneAjax(x,y,parent){
     var el = $('#ajax-clone').clone().removeClass('hidden').attr('id','');
     el.find('p.name').append(x);
     el.find('p.desc').append(y);
+
     $(parent).append(el);
 }
 
 
-/*
-$('.form_cat').on('submit', function(e){
-    console.log('eeeee');
-    var parent = $(this).parent();
-    var id= parent.find(input).attr('name','id_cat').val();
-    e.preventDefault();
-
-    var x  = $( this ).serialize();
-
-    $.ajax({
-        url: deleteCat+'/'+id,
-        type: 'delete',
-        data: x,
-        dataType: 'text',
-        success: function(response) {
-
-            parent.remove();
-
-        },
-        fail: function(response) {
-        }
-    });
-});
-
-*/
-
-
-
-
-$('.form-options').on('submit', function(e){
-    var amo = $(this).find('.new_option');
-    var parent = $(this).find('.ajax');
-    e.preventDefault();
-    var x  = $( this ).serialize();
-
-    $.ajax({
-        url: route,
-        type: 'POST',
-        data: x,
-        dataType: 'text',
-        success: function(response) {
-
-            amo.children('.row').each(function(){
-                var x = $(this).find('input').val();
-                var y = $(this).find('textarea').val();
-                cloneAjax(x,y,parent);
-            });
-            amo.html('');
-        },
-        fail: function(response) {
-        }
-    });
-});
-
+//-----MODIFIER DISPONIBILTE JOUR TEST DRIVE
 $('.modifier').on('click', function(e){
 
     e.preventDefault();
-
     var id=$(this).attr('data-id');
     var Route=hoursRoute+id;
     $.ajax({
@@ -214,55 +145,162 @@ $('.modifier').on('click', function(e){
         data: '',
         dataType: 'text',
         success: function(response) {
-
             console.log(response);
         },
         fail: function(response) {
+
         }
     });
 });
 
-/*$('.suppCat').on('click', function(e){
+
+//--------SUPPRIMER CATEGORIE
+$('.suppCat').on('click', function(e){
 
     e.preventDefault();
-
+    var token = $(this).data('token');
     var id=$(this).attr('data-id');
-    var Route=DeleteRoute+id;
+
+    var Route=DeleteCatRoute+id;
     console.log(Route);
     $.ajax({
         url: Route,
-        type: 'DELETE',
-        data: '',
-        dataType: 'text',
+        type: 'post',
+        data: {_method: 'delete', _token :token},
         success: function(response) {
-console.log(response);
+            $("."+id).remove();
         },
         fail: function(response) {
+
         }
     });
 });
 
+
+//--------SUPPRIMER OPTION
 $('.suppOpt').on('click', function(e){
 
     e.preventDefault();
-
+    var token = $(this).data('token');
     var id=$(this).attr('data-id');
-    var Route=DeleteRoute+id;
+    var Route=DeleteOptRoute+id;
     console.log(Route);
     $.ajax({
         url: Route,
-        type: 'DELETE',
-        data: '',
-        dataType: 'text',
+        type: 'post',
+        data: {_method: 'delete', _token :token},
         success: function(response) {
-
+           $(".op"+id).remove();
         },
         fail: function(response) {
+
         }
     });
+});
+
+
+//AFFICHAGE DATEPICKER
+if($('.datepicker-drive').length>0){
+    $('.datepicker-drive').datepicker()
+}
+
+$('.list-group-item').on('click', function(e){
+    var current;
+    var activate = function(el) {
+        if (current) {
+            current.classList.remove('active');
+        }
+        current = el;
+        el.classList.add('active');
+    }
+});
+
+//////////////////////////////////////
+/*var tabchecked = new Array();
+$('.opt-checked').on('change',function(e) {
+    e.preventDefault();
+    tabchecked[tabchecked.length] = 'Categorie: '+$(this).attr('data-category')+', Option: '+$(this).attr('data-name')+', Description: '+$(this).attr('data-description')+', Prix: '+$(this).attr('data-price');
+    console.log(tabchecked);
 });*/
 
 
-if($('.datepicker').length>0){
-    $('.datepicker').datepicker()
+
+
+
+
+
+//Devis
+$('.create-devis').on('click',function(e) {
+    e.preventDefault();
+    data =  {};
+    obj =  {};
+    var i = 0;
+
+   $('.btn-group').each(function(){
+
+       i++;
+       data[i] =  {};
+       $(this).addClass('test'+i);
+
+       var el    = $(this).find('.active').find('input');
+       data[i]['name'] = el.data('name');
+       data[i]['desc'] = el.data('description');
+       data[i]['price']  = el.data('price');
+
+
+
+   });
+
+    console.log(data);
+    var prix_tot=0;
+    var json_obj = $.parseJSON(JSON.stringify(data));
+    for(var i in json_obj)
+    {
+       var name =  json_obj[i].name;
+       var desc =  json_obj[i].desc;
+       var price = json_obj[i].price;
+        prix_tot=prix_tot+price;
+       $('.table .table_option').append('<tr><td>'+name+'</td><td>'+desc+'</td><td>'+price+' DT</td></tr>');
+    }
+
+    var prix_totale_option = $(this).parent().parent().find('.prix_tot_opt');
+    prix_totale_option.text(prix_tot+'DT');
+
+    var prix_basique=$(this).attr('data-price-car');
+    console.log(prix_basique);
+    var prix_tot_car=parseInt(prix_tot)+(parseInt(prix_basique)*1.18+236.500+500+0.500);
+
+    var prix_totale_voiture = $(this).parent().parent().find('.prix_tot_car');
+    prix_totale_voiture.text(prix_tot_car+'DT');
+    //var el=$('#to-clone').clone().removeClass('hidden').attr('id','').addClass('row');
+    //var nb=amo.find('.row').length;
+
+    //el.find('input.name').attr('name','name_option_'+nb).val('');
+    //el.find('textarea.description').attr('name','description_option_'+nb).val('');
+
+
+});
+
+function checkConx(){
+    var res = 'false';
+    data={};
+    $.ajax({
+        url: 'http://audi-tunisie.tn/teasing/controllers/submit.php',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+        success: function(data, textStatus, xhr) {
+
+            if(xhr.status==200){
+                res = ' true';
+            }
+            console.log(res) ;
+
+        },
+        error: function(data, textStatus, xhr) {
+            console.log(res) ;
+        }
+    });
+
+
 }

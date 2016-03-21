@@ -108,7 +108,7 @@ class CategoriesController extends Controller
             $option->description = $request->$desc;
             $option->category_id = $request->category_id;
             $option->save();
-        
+
          }
         
         //$option->attachCategory($request->category_id);

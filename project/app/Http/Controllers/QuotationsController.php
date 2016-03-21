@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Option;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,8 +18,20 @@ class QuotationsController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Creer Devis";
+        $opp = array();
+
+        $categories = Category::all();
+        $options = Option::all();
+
+        foreach ($options as $o) {
+            $opp[$o->category_id][$o->id] = $o->name;
+        }
+
+        return view('Quotations/quotation', ['title' => $title, 'categories' => $categories, 'opp' => $opp]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

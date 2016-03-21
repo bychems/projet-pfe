@@ -12,4 +12,6 @@ class Category extends Model
     public function options(){
         return $this->hasMany('App\Option');
     }
+
+
 }

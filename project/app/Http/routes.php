@@ -18,8 +18,10 @@ Route::group(['prefix'=>'dashboard/cars',  'middleware' => ['web']], function(){
    Route::post('add-car',['as'=>'carStore', 'uses'=>'CarsController@store']);
    Route::put('edit',['as'=>'carEdit', 'uses'=>'CarsController@edit']);
    Route::get('list',['as'=>'carList', 'uses'=>'CarsController@listcars']);
+   Route::delete('supp/{id}',['as'=>'carDelete', 'uses'=>'CarsController@destroy']);
    Route::get('carListTestDrive',['as'=>'carListTestDrive', 'uses'=>'CarsController@listcarstestdrive']);
    Route::get('affiche/{id}',['as'=>'carAffiche', 'uses'=>'CarsController@affiche']);
+   Route::get('devis/{id}',['as'=>'creerDevis', 'uses'=>'CarsController@devis']);
 });
 
 

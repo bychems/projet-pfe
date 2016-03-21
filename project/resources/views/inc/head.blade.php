@@ -14,7 +14,9 @@
     {!! HTML::style('project/resources/assets/font-awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('project/resources/assets/dist/css/bootstrap.min.css') !!}
     {!! HTML::style('project/resources/assets/plugins/datePicker/css/datepicker.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/calendar/bootstrap-datetimepicker.min.css') !!}
     {!! HTML::style('project/resources/assets/css/style.css') !!}
+
 
     @yield('css')
 </head>

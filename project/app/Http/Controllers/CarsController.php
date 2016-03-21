@@ -106,9 +106,6 @@ class CarsController extends Controller {
                 }
             }
         }
-        
-        
-
     }
 
     /**
@@ -164,44 +161,58 @@ class CarsController extends Controller {
         //
     }
     
+
     public function affiche($id){
         $title = "voiture";
         $options = $idCategries = array();
-        
+
         if(isset($id) && !empty($id)){
             $car = Car::findOrFail($id);
+
+
             $options = current($car->optioncars()->lists('option_id'));
-           
+
             if(!empty($options)){
-                    $ids = implode(",", $options);
 
-                    $optionsList = Option::whereRaw('id  in ('. $ids .' ) order by category_id' )->get();
+            $ids = implode(",", $options); //option ID's
 
-                    foreach($optionsList as $option){
-                        $el  = $option->category_id;
-                        if(!in_array($el, $idCategries)){
-                            array_push( $idCategries, $el);
-                        }
+            $prices = OptionCar::whereRaw('option_id  in ('. $ids .' ) and car_id='. $id .' order by option_id' )->get();
+
+            foreach ($prices as $price){
+                $prices_car[$price->option_id]= $price->option_price;
+            };
+
+            $optionsList = Option::whereRaw('id  in ('. $ids .' ) order by id' )->get();
+
+            foreach($optionsList as $option){
+                $el  = $option->category_id;
+                if(!in_array($el, $idCategries)){//if not exist in array
+                    array_push( $idCategries, $el);
+                }
+            }
+            $idCategries = implode (",", $idCategries);
+
+            $categories = Category::whereRaw('id  in ('. $idCategries .')' )->get();
+
+            foreach($categories as $cat){
+                foreach($optionsList as $option){
+                    if($option['category_id'] == $cat['id']){
+                        $listcategories[$cat->id]['name']=$cat->name_category;
+                        $listcategories[$cat->id]['options'][$option->id]['name'] = $option->name;
+                        $listcategories[$cat->id]['options'][$option->id]['description'] = $option->description;
+                        $listcategories[$cat->id]['options'][$option->id]['price'] = $prices_car[$option->id];
+
                     }
-                    $idCategries = implode (",", $idCategries);
+                }
+            }
+                return view('Cars/car-details', ['categories'=>$listcategories,'title'=>$title,'car'=>$car] );
 
-
-                    $categories = Category::whereRaw('id  in ('. $idCategries .')' )->get();
-                    foreach($categories as $cat){
-                        foreach($optionsList as $option){
-                            if($option['category_id'] == $cat['id']){
-                                $listcategories[$cat->id]['name']=$cat->name_category;
-                                $listcategories[$cat->id]['options'][$option->id] = $option;
-                            }
-                        }
-                    }
-           return view('Cars/car-details', ['optionsList'=>$optionsList, 'categories'=>$listcategories,'title'=>$title,'car'=>$car] );
         }
-          else{     
-         return view('Cars/car-details', ['categories'=>null,'car'=>$car,'title'=>$title] );
-        
-          }
-          }
+            else{
+                return view('Cars/car-details', ['categories'=>null,'car'=>$car,'title'=>$title] );
+            }
+        }
+
     }
 
     /**
@@ -211,7 +222,9 @@ class CarsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+        $car = Car::find($id);
+        $car->delete();
+        return redirect(route('carList'));
     }
 
 }

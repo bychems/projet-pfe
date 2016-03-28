@@ -1,5 +1,6 @@
 <head>
-    <meta charset="utf-8">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -16,6 +17,7 @@
     {!! HTML::style('project/resources/assets/plugins/datePicker/css/datepicker.css') !!}
     {!! HTML::style('project/resources/assets/plugins/calendar/bootstrap-datetimepicker.min.css') !!}
     {!! HTML::style('project/resources/assets/css/style.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/owl.carousel/owl.carousel.css') !!}
 
 
     @yield('css')

@@ -20,11 +20,15 @@ class CreateCustomersTable extends Migration
             $table->string('mail');
             $table->string('adress');
             $table->string('function');
+            $table->integer('phone');
+            $table->string('car');
             $table->integer('commercial_id');
             //$table->foreign('id_commercial')->references('id_commercial')->on('commercials')->onUpdate('cascade');
             $table->timestamps();
         });
 
+
+        \App\Customer::create(['name'=>'chabah','last_name'=>'chabah','cin'=>0,'mail'=>'mail','adress'=>'adress','phone'=>000000,'car'=>'car','function'=>'fonction' ,'commercial_id'=>0]);
 
     }
 

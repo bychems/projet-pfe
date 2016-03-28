@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Quotation;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use \Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Storage;
 use Image;
 
@@ -54,58 +59,72 @@ class CarsController extends Controller {
      */
     public function store(Request $request) {
         //--ADD CAR INFOS
-       //dd($request);
-       /*if(Input::hasFile('picture'))
-       {    
-           
-           $images=Input::file('picture');
-           foreach($images as $image){
-               Storage::put($image->getClientOriginalName(), file_get_contents($image) );
-               $image->move('..\public\uploads',$image->getClientOriginalName());
-                
-                $filename  = time() . '.' . $image->getClientOriginalExtension();
+        $validator = Validator::make($request->all(),
+            [
+                'model'=>'required',
+                'video'=>'required',
+                'basic_price'=>'required|numeric']);
+        if ($validator->fails()) {
+            //$messages = $validator->messages();
+            return redirect(route('carIndex'))->withErrors($validator->errors());
+        }
 
-                $path = public_path('profilepics/' . $filename);
+        else {
 
-                Image::make($image->getRealPath())->resize(200, 200)->save($path);
-                $user->image = $filename;
-                $user->save();
-           }
-           
-           dd($images);
-       }
-       else
-       {
-           dd(":(");
-       }*/
-       // $ch = $request->tab_option;
-       // $options = explode('-', $ch);
-        
-        $createCar=Car::create($request->only([
-                'model'=>'model',
-                'picture'=>  json_encode($request->file('picture')),
-                'video' => 'video',
-                'basic_price'=>'basic_price',
-                'test_drive'=>'test_drive'
-                ]));
-        //$createCar->optionCar()->attach($options);
-        $IdCar = $createCar->id;
-        //dd($IdCar);
-        //--GET OPTIONS LIST
-        $ch = $request->tab_option;
+            if (Input::hasFile('picture')) {
+                $i = 0;
+                $images = Input::file('picture');
+                $imgs = array();
+                foreach ($images as $image) {
 
-        $options = explode('-', $ch);
-        
-        //--ADD TO PRICE TABLE
-        foreach ($options as $option) {
-            if ($option != '0' && is_numeric(intval($option))) {
-                $v = intval($option);
-                $new_price = 'price-' . $option;
-                if(isset($request->$new_price)){
-                    DB::insert('insert into option_cars (car_id,option_id,option_price) values (?,?,?)', [$IdCar, $v, $request->$new_price]);
+                    ++$i;
+                    $d = new DateTime('NOW');
+                    $time = $d->format('Y-m-d_H-i-s') . $i;
+                    Storage::put($image->getClientOriginalName(), file_get_contents($image));
+                    $ex = $image->getClientOriginalExtension();
+                    $filename = $time . '.' . $ex;
+                    $image->move('C:\xamppp\htdocs\projet-laravel\project\uploads', $filename);
+                    //$path = public_path('profilepics/' . $filename);
+                    //Image::make($image->getRealPath())->resize(200, 200)->save($path);
+                    $imgs[$i - 1] = $filename;
+
                 }
             }
+            $imgs = json_encode($imgs);
+
+
+            $createCar = new Car();
+            $createCar->model = $request->model;
+            $createCar->picture = $imgs;
+            $createCar->video = $request->video;
+            $createCar->basic_price = $request->basic_price;
+            $createCar->test_drive = $request->test_drive;
+            $createCar->save();
+
+            //$createCar->optionCar()->attach($options);
+            $IdCar = $createCar->id;
+            //dd($IdCar);
+            //--GET OPTIONS LIST
+            $ch = $request->tab_option;
+
+            $options = explode('-', $ch);
+
+            //--ADD TO PRICE TABLE
+            foreach ($options as $option) {
+                if ($option != '0' && is_numeric(intval($option))) {
+                    $v = intval($option);
+                    $new_price = 'price-' . $option;
+                    if (isset($request->$new_price)) {
+                        DB::insert('insert into option_cars (car_id,option_id,option_price) values (?,?,?)', [$IdCar, $v, $request->$new_price]);
+                    }
+                }
+            }
+
         }
+        $title = "List des voitures";
+
+        $cars = Car::all();
+        return view('Cars/list-cars', ['title' => $title, 'cars' => $cars]);
     }
 
     /**
@@ -165,6 +184,12 @@ class CarsController extends Controller {
     public function affiche($id){
         $title = "voiture";
         $options = $idCategries = array();
+        $customers = array();
+        $customer = Customer::all();
+
+        foreach ($customer as $c) {
+            $customers[$c->id] = $c->name.' '.$c->last_name ;
+        }
 
         if(isset($id) && !empty($id)){
             $car = Car::findOrFail($id);
@@ -205,7 +230,7 @@ class CarsController extends Controller {
                     }
                 }
             }
-                return view('Cars/car-details', ['categories'=>$listcategories,'title'=>$title,'car'=>$car] );
+                return view('Cars/car-details', ['categories'=>$listcategories,'title'=>$title,'car'=>$car,'customers'=>$customers] );
 
         }
             else{
@@ -213,6 +238,47 @@ class CarsController extends Controller {
             }
         }
 
+    }
+
+    public function storeDevis(Request $request,$id_car) {
+
+        //$prix_options=$request->prix_total_option;
+        $options = json_decode($request->list_option);
+        $customer = Customer::GetCustomer($request->customers)->get();
+
+        $mail_customer=$customer[0]->mail;
+
+        $quotation= new Quotation();
+        $quotation->options=$request->list_option;
+        $quotation->total_price=$request->prix_total_voiture;
+        $quotation->id_car=$id_car;
+        $quotation->id_customer=$request->customers;
+        $quotation->save();
+
+        Mail::send('Mail.mail_devis',['model'=>$request->model, 'basic_price'=>$request->basic_price, 'tva'=>$request->tva,
+                                        'frais_imm'=>$request->frais_imm,'tme'=>$request->tme,
+                                        'frais_timbre'=>$request->frais_timbre, 'prix_tot'=>$request->prix_total_voiture,
+                                        'options'=>$options,'prix_options'=>$request->prix_options,'name'=>$customer[0]->name,
+                                        'last_name'=>$customer[0]->last_name],function($message) use ( $mail_customer)
+        {
+           $message->to($mail_customer)->cc('byoussefchems@gmail.com')->subject('Devis Audis');
+        }
+        );
+
+
+
+        return view('Mail/mail_devis',[
+            'model'=>$request->model,
+            'basic_price'=>$request->basic_price,
+            'tva'=>$request->tva,
+            'frais_imm'=>$request->frais_imm,
+            'tme'=>$request->tme,
+            'frais_timbre'=>$request->frais_timbre,
+            'prix_tot'=>$request->prix_total_voiture,
+            'options'=>$options,
+            'prix_options'=>$request->prix_options,
+            'name'=>$customer[0]->name,
+            'last_name'=>$customer[0]->last_name] );
     }
 
     /**

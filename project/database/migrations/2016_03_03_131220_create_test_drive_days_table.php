@@ -14,7 +14,7 @@ class CreateTestDriveDaysTable extends Migration
     {
         Schema::create('test_drive_days', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->date('date_day');
             $table->integer('car_id')->unsigned();
             $table->foreign('car_id')->references('id')->on('cars')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

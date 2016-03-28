@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Category;
 use App\Option;
+use Illuminate\Support\Facades\Validator;
+
 class CategoriesController extends Controller
 {
     /**
@@ -50,23 +52,33 @@ class CategoriesController extends Controller
         //
         
          //   dd($request);
-         $createCategorie=Category::create($request->only(['name_category']));
-         $IdCategorie =  $createCategorie->id;
-         $nb_op = intval($request->tab_option);
-    
-         for($i=0;$i<$nb_op;$i++){
-             
-            $x = 'name_option_'.$i;
-            $y = 'description_option_'.$i;
-            $option = new Option();
-            $option->name = $request->$x;
-            $option->description =  $request->$y;
-            $option->category_id = $IdCategorie;
-            $option->save();
-            // Option::create($request->only(['name'=>'name-option-'.$i, 'description'=>'description-option-'.$i]))->attach($IdCategorie);
-            
-          }
-          
+
+        $validator = Validator::make($request->all(),
+            [
+                'name_category'=>'required']);
+        if ($validator->fails()) {
+            //$messages = $validator->messages();
+            return redirect(route('categoryIndex'))->withErrors($validator->errors());
+        }
+
+        else {
+            $createCategorie = Category::create($request->only(['name_category']));
+            $IdCategorie = $createCategorie->id;
+            $nb_op = intval($request->tab_option);
+
+            for ($i = 0; $i < $nb_op; $i++) {
+
+                $x = 'name_option_' . $i;
+                $y = 'description_option_' . $i;
+                $option = new Option();
+                $option->name = $request->$x;
+                $option->description = $request->$y;
+                $option->category_id = $IdCategorie;
+                $option->save();
+                // Option::create($request->only(['name'=>'name-option-'.$i, 'description'=>'description-option-'.$i]))->attach($IdCategorie);
+
+            }
+        }
         //dd($option);
         return redirect(route('categoryIndex'));
     }
@@ -95,10 +107,10 @@ class CategoriesController extends Controller
     
     public function addOpCat(Request $request)
     {
-        
-       
+
+
         $n=  intval($request->nb_option);
-        
+
         for($i=0;$i<$n;$i++)
          {
             $name = "name_option_".$i;
@@ -110,7 +122,7 @@ class CategoriesController extends Controller
             $option->save();
 
          }
-        
+
         //$option->attachCategory($request->category_id);
     }
 

@@ -7,11 +7,11 @@
     <div class="col-md-8">
         
   
-<h1>Ajouter Catégorie</h1>
+<h1>Ajouter Cat&eacute;gorie</h1>
 {!! Form::open(['method'=>'post', 'url'=>route('categoryStore') ])!!}
             <div class="form-group ">
                 {!! Form::label('nameL','Nom') !!}
-                {!! Form::text('name_category', '',['class'=>'form-control', 'placeholder'=>'Nom de la Catégorie']) !!}
+                {!! Form::text('name_category', '',['class'=>'form-control', 'placeholder'=>'Nom de la Cat&eacute;gorie']) !!}
             </div>
             <div class="row">
                     <div class="col-md-2">
@@ -26,7 +26,7 @@
                     </div>
             </div>
                      <br>
-            <button class="btn btn-success droite" type="submit">save</button>
+            <button class="btn btn-success droite" type="submit">Enregistrer</button>
  {!! Form::close()!!}
             @if(isset($categories))
                        @foreach($categories as $c)
@@ -36,11 +36,9 @@
                                 <h3 class="form-delete ">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            Categorie : {{$c->name_category}}
+                                            Cat&eacute;gorie : {{$c->name_category}}
                                         </div>
-                                        <div class="col-md-1">
-                                            <button  class="fa fa-pencil modifCat" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
-                                        </div>
+
                                         <div class="col-md-1">
                                             <button  class="fa fa-times-circle suppCat" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
                                         </div>
@@ -59,11 +57,9 @@
                                                     <p><b>Nom: </b>{{$option->name}}</p>
                                                 </div>
                                                 <div class="col-md-5">
-                                                     <p><b>Déscription: </b>{{$option->description}}</p>
+                                                     <p><b>Description: </b>{{$option->description}}</p>
                                                 </div>
-                                                 <div class="col-md-1">
-                                                     <button  class="fa fa-pencil modifOpt" data-id="{{$c->id}}" data-token="{{ csrf_token() }}"></button>
-                                                 </div>
+
                                                 <div class="col-md-1">
                                                     <button  class="fa fa-times-circle suppOpt" data-id="{{$option->id}}" data-token="{{ csrf_token() }}"></button>
                                                 </div>
@@ -109,8 +105,8 @@
     </div>
     <div class="col-md-8">
         <div class="form-group">
-            {!! Form::label('','Déscription') !!}
-             {!! Form::textarea('option_description', '',['class'=>'form-control description', 'placeholder'=>'Déscription de l option', 'rows'=>1]) !!}
+            {!! Form::label('','Description') !!}
+             {!! Form::textarea('option_description', '',['class'=>'form-control description', 'placeholder'=>'Description de l option', 'rows'=>1]) !!}
         </div>  
     </div>    
 </div> 
@@ -123,7 +119,7 @@
                 <p class="name"><b>Nom: </b></p>
             </div>
             <div class="col-md-5">
-                <p class="desc"><b>Déscription: </b></p>
+                <p class="desc"><b>Description: </b></p>
             </div>
 
 

@@ -22,6 +22,7 @@ Route::group(['prefix'=>'dashboard/cars',  'middleware' => ['web']], function(){
    Route::get('carListTestDrive',['as'=>'carListTestDrive', 'uses'=>'CarsController@listcarstestdrive']);
    Route::get('affiche/{id}',['as'=>'carAffiche', 'uses'=>'CarsController@affiche']);
    Route::get('devis/{id}',['as'=>'creerDevis', 'uses'=>'CarsController@devis']);
+   Route::post('add-devis/{id}',['as'=>'devisStore', 'uses'=>'CarsController@storeDevis']);
 });
 
 
@@ -40,11 +41,18 @@ Route::group(['prefix'=>'dashboard/categories',  'middleware' => ['web']], funct
 
 //  Routes of TestDrive
 Route::group(['prefix'=>'dashboard/testDrive',  'middleware' => ['web']], function(){
-   
+
+   //  Routes of TestDrive
+
    Route::get('/',['as'=>'testDriveIndex', 'uses'=>'TestDrivesController@index']);
    Route::post('/addDisponibility',['as'=>'adddisp', 'uses'=>'TestDrivesController@store']);
    Route::get('/Calendar/{id}',['as'=>'Calendar', 'uses'=>'TestDrivesController@showCalendar']);
-   Route::get('/Hours/{id}',['as'=>'Hours', 'uses'=>'TestDrivesController@showHour']);
+   Route::get('/hours/{date}/{car}',['as'=>'hours', 'uses'=>'TestDrivesController@showHours']);
+   Route::post('/supp-day/{id}',['as'=>'supp-day', 'uses'=>'TestDrivesController@destroy']);
+   Route::post('/add-hour/{id}',['as'=>'add-hour', 'uses'=>'TestDrivesController@addHour']);
+
+
+
 });
 
 //  Routes of Customers
@@ -55,9 +63,18 @@ Route::group(['prefix'=>'dashboard/customers','middleware' => ['web']], function
    Route::get('affiche/{id}',['as'=>'afficheCustomer', 'uses'=>'CustomersController@affiche']);
    Route::get('edit/{id}',['as'=>'editcustomer', 'uses'=>'CustomersController@edit']);
    Route::put('update/{id}',['as'=>'updatecustomer', 'uses'=>'CustomersController@update']);
+   Route::post('/add-hour/{id}',['as'=>'add-hour', 'uses'=>'TestDrivesController@addHour']);
 });
 
+//  Routes of Users
+Route::group(['prefix'=>'dashboard/','middleware' => ['web']], function(){
+   Route::get('adduser',['as'=>'addUser', 'uses'=>'UsersController@index']);
+   Route::post('storeuser', ['as'=>'storeUser', 'uses'=>'UsersController@store']);
+   Route::get('profiluser', ['as'=>'profilUser', 'uses'=>'UsersController@profil']);
+   Route::get('detailuser/{id}', ['as'=>'detailUser', 'uses'=>'UsersController@detailUser']);
+   Route::put('update/{id}',['as'=>'updateUser', 'uses'=>'UsersController@update']);
 
+});
 
 
 Route::get('/', function () {
@@ -76,4 +93,10 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/home', ['as'=>'home', 'uses'=>'HomeController@index']);
 });

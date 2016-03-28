@@ -7,12 +7,14 @@
 
     <h1>Client: {{$customer->name}} {{$customer->last_name}}</h1><hr>
         <ul>
-
-            <li> <strong>Cin Client:</strong>{{$customer->cin}}</li>
-            <li> <strong>Adresse Client:</strong>{{$customer->adress}}</li>
-            <li> <strong>Email Client:</strong>{{$customer->mail}}</li>
-            <li> <strong>Fonction Client:</strong>{{$customer->function}}</li>
-
+            <table>
+            <tr><td><li><strong>Cin Client:</strong></li></td>   <td>{{$customer->cin}}</td></tr>
+                <tr><td><li><strong>Adresse Client:</strong></li></td>   <td>{{$customer->adress}}</td></tr>
+                <tr><td><li><strong>Email Client:</strong></li></td>   <td>{{$customer->mail}}</td></tr>
+                <tr><td><li><strong>Fonction Client:</strong></li></td>   <td>{{$customer->function}}</td></tr>
+                <tr><td><li><strong>T&eacute;l&eacute;phone Client:</strong></li></td>   <td>{{$customer->phone}}</td></tr>
+                <tr><td><li><strong>Voiture Client:</strong></li></td>   <td>{{$customer->car}}</td></tr>
+            </table>
         </ul>
 
     <div>

@@ -8,7 +8,7 @@
     <ul>
         @foreach($cars as $car)
             @if(!empty($car->model))
-                <li><a href="{{route('Calendar', $car->id)}}">{{ $car->model }}</a></li>
+                <li><a href="{{route('carAffiche', $car->id)}}">{{ $car->model }}</a></li>
             @endif
         @endforeach
 

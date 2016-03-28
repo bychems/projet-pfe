@@ -226,10 +226,7 @@ $('.opt-checked').on('change',function(e) {
 
 
 
-
-
-
-//Devis
+//---------------DEVIS---------------------//
 $('.create-devis').on('click',function(e) {
     e.preventDefault();
     data =  {};
@@ -246,14 +243,13 @@ $('.create-devis').on('click',function(e) {
        data[i]['name'] = el.data('name');
        data[i]['desc'] = el.data('description');
        data[i]['price']  = el.data('price');
-
-
-
    });
 
-    console.log(data);
+    //console.log(data);
     var prix_tot=0;
     var json_obj = $.parseJSON(JSON.stringify(data));
+    console.log(data);
+    $('#list_options').val(JSON.stringify(data));
     for(var i in json_obj)
     {
        var name =  json_obj[i].name;
@@ -265,6 +261,7 @@ $('.create-devis').on('click',function(e) {
 
     var prix_totale_option = $(this).parent().parent().find('.prix_tot_opt');
     prix_totale_option.text(prix_tot+'DT');
+    $('#prix_options').val(prix_tot);
 
     var prix_basique=$(this).attr('data-price-car');
     console.log(prix_basique);
@@ -281,6 +278,8 @@ $('.create-devis').on('click',function(e) {
 
 });
 
+
+//------------ CHECK CONNECTION -----------------//
 function checkConx(){
     var res = 'false';
     data={};
@@ -302,5 +301,130 @@ function checkConx(){
         }
     });
 
+}
 
+
+//---------------- CALENDRIER ------------------//
+
+$('.supprimer').on('click', function(e){
+
+    e.preventDefault();
+
+    var id=$(this).attr('data-id');
+    var Route=suppdayRoute+id;
+    $.ajax({
+        url: Route,
+        type: 'GET',
+        data: '',
+        dataType: 'text',
+        success: function(response) {
+            $( "."+id ).remove();
+        },
+        fail: function(response) {
+        }
+    });
+});
+
+var datepicker  = $('#datetimepicker12');
+var datepickerTD  = $('#datetimepicker12 td');
+
+datepicker.on('click', '.day:not(.disabled)', function(e){
+    e.preventDefault();
+    datepickerTD.removeClass('clicked')
+    $(this).addClass('clicked');
+    var dates=$(this).attr('data-day');
+    $('.showDate').html(dates);
+    dates=dates.replace('/','-');
+    dates=dates.replace('/','-');
+    var Route=idDayRoute+dates+'/'+carid;
+    $.ajax({
+        url: Route,
+        type: 'GET',
+        data: '',
+        dataType: 'text',
+        success: function(response) {
+            var json_obj = $.parseJSON(response);
+            var id;
+            var state;
+            // if($.inArray(i, tabheurs)==0)
+            for(var j=9;j<=16;j++)
+            {
+                $('.h-'+j).removeClass('disabled').find('input').attr('disabled', false).attr('checked',false) ;
+                $('.h-'+j).find('span').html('');
+            }
+            for (var i in json_obj)
+            {   if(json_obj[i].state=='false')
+            {
+                state='(non disponible)';
+            }
+            else
+            {
+                state='(r&eacute;serv&eacute;e)';
+            }
+                $('.h-'+json_obj[i].h).addClass('disabled').find('input').attr('disabled', true) ;
+
+                id=json_obj[i].id;
+                var  phrase  = "";
+                var btn;
+                if(json_obj[i].state == "true"){
+                    phrase =  json_obj[i].line + ' ' + json_obj[i].attach_name;
+                }
+                if(json_obj[i].line == "Par") {
+                    $('.h-' + json_obj[i].h).find('span').html(state + "<a href=" + detailUserRoute + json_obj[i].attach_id + ">" + phrase + "</a>");
+                }
+                else if(json_obj[i].line == "Pour")
+                {
+                    $('.h-' + json_obj[i].h).find('span').html(state + "<a href=" + detailCustomerRoute + json_obj[i].attach_id + ">" + phrase + "</a>");
+                }
+
+
+                if(json_obj[i].annuler == "true")
+                {  btn=$('#btn-anuuler').clone().removeClass('hidden');
+                    $('.h-'+json_obj[i].h).find('span').append(btn);
+                }
+
+                console.log(json_obj[i].annuler);
+
+            }
+            $('.day_id').val(id);
+            $('.supprimer').attr('data-id',id);
+
+            //json_obj[i].state
+            /* for(var i in json_obj)
+             {}*/
+        },
+        fail: function(response) {
+
+        }
+    });
+});
+// console.log(dates);
+
+datepicker.on('control space', function(e){
+    $('#datetimepicker12 td').attr('data-action', '');
+});
+datepickerTD.attr('data-action', '');
+
+
+if($('.owl-carousel').length>0){
+    $('.owl-carousel').owlCarousel({
+        stagePadding: 0,
+        loop:false,
+        margin:10,
+        nav:true,
+        navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+        autoplay:true,
+        autoHeight:true,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:1
+            },
+            1000:{
+                items:1
+            }
+        }
+    });
 }

@@ -4,7 +4,7 @@
 @section('content')
 
 
-    <h1>Ajouter Client</h1>
+    <h1>Modifier Client</h1>
     <div class="contenu">
     {!! Form::model($customer, ['method'=>'put', 'url'=>route('updatecustomer',$customer->id ) ])!!}
 
@@ -26,8 +26,8 @@
         {!! Form::text('name', null,['class'=>'form-control', 'placeholder'=>'Nom du client']) !!}
     </div>
     <div class="form-group">
-        {!! Form::label('','Prenom') !!}
-        {!! Form::text('last_name',  null,['class'=>'form-control', 'placeholder'=>'Prenom du client']) !!}
+        {!! Form::label('','Pr&eacute;nom') !!}
+        {!! Form::text('last_name',  null,['class'=>'form-control', 'placeholder'=>'Pr&eacute;nom du client']) !!}
     </div>
     <div class="form-group">
         {!! Form::label('','Cin') !!}
@@ -44,6 +44,14 @@
     <div class="form-group">
         {!! Form::label('','Fonction') !!}<br>
         {!! Form::text('function',  null,['class'=>'form-control', 'placeholder'=>'Fonction du client']) !!}
+    </div>
+    <div class="form-group">
+        {!! Form::label('','T&eacute;l&eacute;phone') !!}<br>
+        {!! Form::text('phone',  null,['class'=>'form-control', 'placeholder'=>'T&eacute;l&eacute;phone du client']) !!}
+    </div>
+    <div class="form-group">
+        {!! Form::label('','Voiture') !!}<br>
+        {!! Form::text('car',  null,['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
     </div>
     <button class="btn btn-success" type="submit">save</button>
     </div>

@@ -116,3 +116,27 @@ p{
 .picker-switch.accordion-toggle{
     display:none;
 }
+
+.owl-prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    font-size: 30px;
+    background: rgba(19, 19, 19, 0.34);
+    padding: 20px 14px 15px 20px;
+    line-height: 9px;
+    color: #FFFFFF;
+}
+.owl-next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    font-size: 30px;
+    background: rgba(19, 19, 19, 0.34);
+    padding: 20px 14px 15px 20px;
+    line-height: 9px;
+    color: #FFFFFF;
+}
+.owl-carousel img {
+    width: 100%;
+}

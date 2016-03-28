@@ -16,4 +16,9 @@ class TestDriveHour extends Model
      public function customer(){
         return $this->belongsTo('App\Customer');
     }
+
+    public function scopeListHeureIndispo($query,$date)
+    {
+        return $query->where('day_id','=', $date);
+    }
 }

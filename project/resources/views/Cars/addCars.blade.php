@@ -4,10 +4,23 @@
 @section('content')
 <h1>Ajouter Voiture</h1>
 {!! Form::open(['method'=>'post', 'url'=>route('carStore') , 'files'=>true])!!}
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    </div>
+
+@endif
+
+
 <div class="row">
 <div class="form-group col-md-8">
-    {!! Form::label('modelL','Modele') !!}
-    {!! Form::text('model', '',['class'=>'form-control', 'placeholder'=>'Modele de la voiture', 'required'=>true]) !!}
+    {!! Form::label('modelL','Mod&egravele') !!}
+    {!! Form::text('model', '',['class'=>'form-control', 'placeholder'=>'Mod&egrave;le de la voiture', 'required'=>true]) !!}
 </div>
 </div>
 
@@ -20,22 +33,22 @@
 
 <div class="row">
 <div class="form-group col-md-8">
-    {!! Form::label('videoL','Video') !!}
-    {!! Form::text('video', '',['class'=>'form-control', 'placeholder'=>'Lien de la video']) !!}
+    {!! Form::label('videoL','Vid&eacute;o') !!}
+    {!! Form::url('video', '',['class'=>'form-control', 'placeholder'=>'Lien de la vid&eacute;o']) !!}
 </div>
 </div>
 
 <div class="row">
 <div class="form-group col-md-8">
-    {!! Form::label('basic_priceL','Prix basique') !!}
-    {!! Form::text('basic_price', '',['class'=>'form-control', 'placeholder'=>'Modele de la voiture']) !!}
+    {!! Form::label('basic_priceL','Prix basique (DT)') !!}
+    {!! Form::number('basic_price', '',['class'=>'form-control', 'placeholder'=>'Mod&egravele de la voiture']) !!}
 </div>
 </div>
 
 <div class="row">
 <div class="form-group col-md-8">
     {!! Form::label('disponible','Disponible dans le garage') !!}<br>
-    {!! Form::radio('test_drive', '1',false) !!}
+    {!! Form::radio('test_drive', '0',false) !!}
     {!! Form::label('oui','OUI') !!}
     {!! Form::radio('test_drive', '0',false) !!}
     {!! Form::label('non','NON') !!}
@@ -52,7 +65,7 @@
         @if (isset($opp[$c->id]))
             <div class="row">
                 <div class="form-group col-md-8">
-                    <h3>Categorie : {{$c->name_category}}</h3>
+                    <h3>Cat&eacute;gorie : {{$c->name_category}}</h3>
                 </div>
             </div>
 
@@ -76,14 +89,14 @@
         @endif
    @endforeach
 @endif
-<button class="btn btn-success" type="submit">save</button>
+<button class="btn btn-success" type="submit">Enregistrer</button>
 {!! Form::close()!!}
 <div class="hidden" id="to-clone">
     <div class="col-md-8">
         <p></p>
     </div>
     <div class="col-md-4">
-        {!! Form::text('', '',['class'=>'form-control price', 'placeholder'=>'Prix','required'=>true]) !!}
+        {!! Form::number('', '',['class'=>'form-control price', 'placeholder'=>'Prix (DT)','required'=>true]) !!}
     </div>
 </div> 
 @stop

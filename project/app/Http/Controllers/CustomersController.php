@@ -47,14 +47,33 @@ class CustomersController extends Controller
         //--ADD NEW CUSTOMER
         // $user::Auth
 
-        $validator = Validator::make($request->all(), ['cin'=> 'required|unique:customers|numeric|min:8']);
+        $validator = Validator::make($request->all(),
+            ['cin'=> 'required|unique:customers|numeric|min:8',
+            'name'=>'required',
+            'last_name'=>'required',
+            'mail'=>'required',
+            'adress'=>'required',
+            'function'=>'required',
+            'phone'=>'required|numeric',
+            'car'=>'required']);
         if ($validator->fails()) {
             //$messages = $validator->messages();
             return redirect(route('addcustomerIndex'))->withErrors($validator->errors());
         }
 
         else {
-            Customer::create($request->all());
+            $customer= new Customer();
+            $customer->name=$request->name;
+            $customer->last_name=$request->last_name;
+            $customer->cin=$request->cin;
+            $customer->mail=$request->mail;
+            $customer->adress=$request->adress;
+            $customer->function=$request->function;
+            $customer->phone=$request->phone;
+            $customer->car=$request->car;
+            $customer->commercial_id=  Controller::User()->id;
+
+            $customer->save();
 
         }
         //$newCustomer =
@@ -83,6 +102,7 @@ class CustomersController extends Controller
     public function edit($id)
     {
         $title="edit commercial";
+
         $customer= Customer::findOrFail($id);
         return view('Customers/edit_customer', ['title'=>$title])->withCustomer($customer);
 
@@ -117,7 +137,7 @@ class CustomersController extends Controller
     public function listcustomers() {
         $title = "List des clients";
 
-        $customers = Customer::all();
+        $customers = Customer::GetCustomerAsUser(Controller::User()->id)->get();
 
         return view('Customers/list-customers', ['title' => $title, 'customers' => $customers]);
     }

@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Car;
+use App\User;
 use DateTime;
 use App\TestDriveDay;
 use App\TestDriveHour;
+use App\Customer;
 
 
 class TestDrivesController extends Controller {
@@ -20,9 +22,10 @@ class TestDrivesController extends Controller {
      */
     public function index() {
         //
+        //dd($this->User()->id);
 
         $cars = array();
-        $car = Car::ListCarsTestDrive()->get();
+        $car = Car::all();
         $title = "Ajout Disponibilité";
         foreach ($car as $c) {
             $cars[$c->id] = $c->model;
@@ -63,19 +66,12 @@ class TestDrivesController extends Controller {
             if ($day != 'Sunday') {
 
                 //insertion de jour disponible
-                $days= new TestDriveDay();
-                $days->date=$datedebut;
-                $days->car_id=$car;
-                $days->save();
+
+                $days =  TestDriveDay::firstOrCreate(['date_day'=>$datedebut, 'car_id'=>$car ]);
                 $day_id=$days->id;
 
                 //insertion de l'heure non disponible '13' de ce jour
-                $hour=new TestDriveHour();
-                $hour->hour=13;
-                $hour->customer_id=2;
-                $hour->day_id=$day_id;
-                $hour->save();
-
+                TestDriveHour::firstOrCreate(['hour'=>13, 'customer_id'=>1,'day_id'=>$day_id ]);
 
 
             }
@@ -83,6 +79,12 @@ class TestDrivesController extends Controller {
             $d = date("Y-m-d", $date);
             $datedebut = new DateTime($d);
         }
+
+        $title = "List des voitures";
+
+        $cars = Car::ListCarsTestDrive()->get();
+
+        return view('Cars/list-cars-test-drive', ['title' => $title, 'cars' => $cars]);
         //get day name
         /* $date = '2016/03/03'; 
           $day = date('l', strtotime($date));
@@ -126,43 +128,95 @@ class TestDrivesController extends Controller {
     public function showCalendar($id)
     {
         $title='Calendrier';
-        $dispo = array();
+
+        $customers = array();
+        $custs = Customer::GetCustomerAsUser(Controller::User()->id)->get();
+        foreach ($custs as $c) {
+            $customers[$c->id] = $c->last_name." ".$c->name;
+        }
 
         $dateDispo=TestDriveDay::ListDateDispo($id)->get();
+        $nondispo = array();
+        if(!empty($dateDispo[0]))
+        {   $dateBegin= $dateDispo[0]->date_day;
+            $dateEnd= $dateDispo[count($dateDispo)-1]->date_day;
 
-        $begin= $dateDispo[0]->date; // prints 1
+            $test=$dateBegin;
+            $i=0;
+            foreach($dateDispo as $d)
+            {
+                if($test!=$d->date_day)
+                {
+                    while($test!=$d->date_day)
+                    {  // echo $d->date_day."!=".$test."-----------";
+                        array_push($nondispo, $test);
+                        $test = strtotime("+1 day", strtotime($test));
+                        $test= date("Y-m-d", $test);
+                    }
+                    $test = strtotime("+1 day", strtotime($test));
+                    $test= date("Y-m-d", $test);
+                }
+                else
+                {
+                    $test = strtotime("+1 day", strtotime($test));
+                    $test= date("Y-m-d", $test);
+                }
 
-        // get the last item in the array
-        $end= $dateDispo[count($dateDispo) - 1]->date; // prints 2
+            }
+            $nondispo=str_replace("-","/",json_encode($nondispo));
 
-
-        return view('TestDrives/calendar-Test-Drive', ['title' => $title,'dateDispo'=>$dateDispo,'dispo'=>$dispo,'begin'=>$begin,'end'=>$end]);
+            return view('TestDrives/calendar-Test-Drive', ['title' => $title,'dateDispo'=>$dateDispo,'dateEnd'=>$dateEnd,
+                'dateBegin'=>$dateBegin,'carid'=>$id,'nondispo'=>$nondispo,
+                'customers'=>$customers]);
+        }
+        else
+        { return view('TestDrives/calendar-Test-Drive', ['title' => $title,'carid'=>$id,'dateBegin'=>"",
+            'dateEnd'=>"",'nondispo'=>"[]",'customers'=>$customers]);
+        }
     }
 
-
-
-    public function showHours($id)
+    public function showHours($date,$car)
     {
+        $row= TestDriveDay::IdDate($date,$car)->get();
+        //dd($row);
+        $id=$row[0]->id;
+
         $hours=TestDriveHour::ListHeureIndispo($id)->get();
         //dd($hours);
         $in = array();
         foreach($hours as $hour){
+            $cust= Customer::find($hour->customer_id);
             $in['h'] = $hour->hour;
             if( $hour->customer_id == 1){
                 $in['state'] = 'false';
+                $in['annuler'] = 'false';
             }
             else {
                 $in['state'] = 'true';
-            }
+                if($cust->commercial_id==Controller::User()->id)
+                {
+                    $in['annuler'] = 'true';
+                    $in['attach_id']=$cust->id;
+                    $in['attach_name']=$cust->name;
+                    $in['line'] = 'Pour';
 
+                    $in['id']=$hour->id;
+                }
+                else {
+                    $in['annuler'] = 'false';
+                    $in['attach_id']=$cust->commercial_id;
+                    $in['attach_name']=User::find($cust->commercial_id)->name;
+                    $in['line'] = 'Par';
+                }
+
+            }
+            $in['id']=$id;
             $re[$hour->id] = $in;
 
         }
-
-
         $re = json_encode($re);
+
         return $re;
-        alert()->success('You have been logged out.', 'Good bye!');
     }
     /**
      * Remove the specified resource from storage.
@@ -170,8 +224,25 @@ class TestDrivesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request ,$id) {
+        $dayid=$request->id_day;
+        $day=TestDriveDay::find($dayid);
+
+        $day->delete();
+        return redirect(route('Calendar',$id));
+    }
+
+
+
+    public function addHour(Request $request ,$id)
+    {
+        $hour= new TestDriveHour();
+        $hour->hour=$request->heure;
+
+        $hour->customer_id=$request->customer;
+        $hour->day_id=$request->id_day;
+        $hour->save();
+        return redirect(route('Calendar',$id));
     }
 
 }

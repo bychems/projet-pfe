@@ -8,5 +8,7 @@
     @yield('js')
     <script src="{{ url('project/resources/assets/js/jquery.form.min.js')}}"></script>
 
+    <script src="{{ asset('project/resources/assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
+
     <script src="{{ url('project/resources/assets/js/main_1.js') }}"></script>
     <!--fin js-->

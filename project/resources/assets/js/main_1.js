@@ -1057,15 +1057,17 @@ if(nb_devis==null){
 }
 
 if(nb_customer!=null){
-    nb=nb+parseInt(nb_customer);
+    nb_customer=parseInt(nb_customer);
+    nb=nb+nb_customer;
 }
 
 if(nb!=0){
     $('.notif_all').removeClass('hidden').html(''+nb+'');
 }
-if(nb_customer!=null){
+if(nb_customer!=0){
     $('.notif_c').removeClass('hidden').html(''+nb_customer+'');
 }
+
 var nb_devis_all= nb_devis+nb_dev_cust;
 if(nb_devis_all!=0){
     $('.notif_d').removeClass('hidden').html(''+nb_devis_all+'');

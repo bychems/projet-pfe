@@ -15,6 +15,7 @@ class CreateTestDriveHoursTable extends Migration
         Schema::create('test_drive_hours', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('hour');
+            $table->string('state');
             $table->integer('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('day_id')->unsigned();

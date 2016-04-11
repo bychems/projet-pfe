@@ -73,6 +73,7 @@ class CarsController extends Controller {
 
             if (Input::hasFile('picture')) {
                 $i = 0;
+                $rep=base_path('uploads');
                 $images = Input::file('picture');
                 $imgs = array();
                 foreach ($images as $image) {
@@ -83,7 +84,7 @@ class CarsController extends Controller {
                     Storage::put($image->getClientOriginalName(), file_get_contents($image));
                     $ex = $image->getClientOriginalExtension();
                     $filename = $time . '.' . $ex;
-                    $image->move('C:\xamppp\htdocs\projet-laravel\project\uploads', $filename);
+                    $image->move($rep, $filename);
                     //$path = public_path('profilepics/' . $filename);
                     //Image::make($image->getRealPath())->resize(200, 200)->save($path);
                     $imgs[$i - 1] = $filename;
@@ -95,6 +96,9 @@ class CarsController extends Controller {
 
             $createCar = new Car();
             $createCar->model = $request->model;
+            $createCar->description = $request->description;
+            $createCar->finition = $request->finition;
+            $createCar->consommation = $request->consommation;
             $createCar->picture = $imgs;
             $createCar->video = $request->video;
             $createCar->basic_price = $request->basic_price;
@@ -240,57 +244,5 @@ class CarsController extends Controller {
 
     }
 
-    public function storeDevis(Request $request,$id_car) {
-
-        //$prix_options=$request->prix_total_option;
-        $options = json_decode($request->list_option);
-        $customer = Customer::GetCustomer($request->customers)->get();
-
-        $mail_customer=$customer[0]->mail;
-
-        $quotation= new Quotation();
-        $quotation->options=$request->list_option;
-        $quotation->total_price=$request->prix_total_voiture;
-        $quotation->id_car=$id_car;
-        $quotation->id_customer=$request->customers;
-        $quotation->save();
-
-        Mail::send('Mail.mail_devis',['model'=>$request->model, 'basic_price'=>$request->basic_price, 'tva'=>$request->tva,
-                                        'frais_imm'=>$request->frais_imm,'tme'=>$request->tme,
-                                        'frais_timbre'=>$request->frais_timbre, 'prix_tot'=>$request->prix_total_voiture,
-                                        'options'=>$options,'prix_options'=>$request->prix_options,'name'=>$customer[0]->name,
-                                        'last_name'=>$customer[0]->last_name],function($message) use ( $mail_customer)
-        {
-           $message->to($mail_customer)->cc('byoussefchems@gmail.com')->subject('Devis Audis');
-        }
-        );
-
-
-
-        return view('Mail/mail_devis',[
-            'model'=>$request->model,
-            'basic_price'=>$request->basic_price,
-            'tva'=>$request->tva,
-            'frais_imm'=>$request->frais_imm,
-            'tme'=>$request->tme,
-            'frais_timbre'=>$request->frais_timbre,
-            'prix_tot'=>$request->prix_total_voiture,
-            'options'=>$options,
-            'prix_options'=>$request->prix_options,
-            'name'=>$customer[0]->name,
-            'last_name'=>$customer[0]->last_name] );
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        $car = Car::find($id);
-        $car->delete();
-        return redirect(route('carList'));
-    }
 
 }

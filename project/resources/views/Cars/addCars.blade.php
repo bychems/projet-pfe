@@ -1,8 +1,18 @@
 @extends("default")
 @section('title',$title)
 
+@section('banner')
+
+    <div class="banner">
+        <div class="container">
+            <div class="col-md-3" style="text-align: center"><h2>Nouvelle Voiture</h2></div>
+        </div>
+    </div>
+
+@stop
+
 @section('content')
-<h1>Ajouter Voiture</h1>
+
 {!! Form::open(['method'=>'post', 'url'=>route('carStore') , 'files'=>true])!!}
 
 @if($errors->any())
@@ -19,9 +29,30 @@
 
 <div class="row">
 <div class="form-group col-md-8">
-    {!! Form::label('modelL','Mod&egravele') !!}
+    {!! Form::label('modelL','Mod&egrave;le') !!}
     {!! Form::text('model', '',['class'=>'form-control', 'placeholder'=>'Mod&egrave;le de la voiture', 'required'=>true]) !!}
 </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-8">
+        {!! Form::label('description','Description') !!}
+        {!! Form::textarea('description', '',['class'=>'form-control', 'placeholder'=>'Description de la voiture', 'required'=>true]) !!}
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-8">
+        {!! Form::label('finition','Finition') !!}
+        {!! Form::text('finition', '',['class'=>'form-control', 'placeholder'=>'Finition de la voiture', 'required'=>true]) !!}
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-8">
+        {!! Form::label('Consommation','Consommation') !!}
+        {!! Form::text('consommation', '',['class'=>'form-control', 'placeholder'=>'Consommation de la voiture', 'required'=>true]) !!}
+    </div>
 </div>
 
 <div class="row">
@@ -48,7 +79,7 @@
 <div class="row">
 <div class="form-group col-md-8">
     {!! Form::label('disponible','Disponible dans le garage') !!}<br>
-    {!! Form::radio('test_drive', '0',false) !!}
+    {!! Form::radio('test_drive', '1',false) !!}
     {!! Form::label('oui','OUI') !!}
     {!! Form::radio('test_drive', '0',false) !!}
     {!! Form::label('non','NON') !!}

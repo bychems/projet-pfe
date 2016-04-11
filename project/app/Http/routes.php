@@ -22,7 +22,9 @@ Route::group(['prefix'=>'dashboard/cars',  'middleware' => ['web']], function(){
    Route::get('carListTestDrive',['as'=>'carListTestDrive', 'uses'=>'CarsController@listcarstestdrive']);
    Route::get('affiche/{id}',['as'=>'carAffiche', 'uses'=>'CarsController@affiche']);
    Route::get('devis/{id}',['as'=>'creerDevis', 'uses'=>'CarsController@devis']);
-   Route::post('add-devis/{id}',['as'=>'devisStore', 'uses'=>'CarsController@storeDevis']);
+   Route::post('add-devis',['as'=>'devisStore', 'uses'=>'QuotationsController@storeDevis']);
+   Route::get('/offlineQuotations',['as'=>'OfflineQuotationIndex', 'uses'=>'QuotationsController@OfflineQuotationIndex']);
+   Route::post('add-quotation-offline', ['as'=>'addQuotationOffline', 'uses'=>'QuotationsController@storeQuotationOffline']);
 });
 
 
@@ -33,8 +35,8 @@ Route::group(['prefix'=>'dashboard/categories',  'middleware' => ['web']], funct
    Route::post('/add-category',['as'=>'categoryStore', 'uses'=>'CategoriesController@store']);
    Route::post('/addoption',['as'=>'addoption', 'uses'=>'CategoriesController@addOpCat']);
   // Route::post('/destroyCat',['as'=>'destroyCat', 'uses'=>'CategoriesController@destroy']);
-   Route::delete('/destroyCat/{id}',array('uses' => 'CategoriesController@destroyCat', 'as' => 'destroyCat'));
-   Route::delete('/destroyOpt/{id}',array('uses' => 'CategoriesController@destroyOpt', 'as' => 'destroyOpt'));
+   Route::get('/destroyCat/{id}',array('uses' => 'CategoriesController@destroyCat', 'as' => 'destroyCat'));
+   Route::get('/destroyOpt/{id}',array('uses' => 'CategoriesController@destroyOpt', 'as' => 'destroyOpt'));
   
 });
 
@@ -50,7 +52,7 @@ Route::group(['prefix'=>'dashboard/testDrive',  'middleware' => ['web']], functi
    Route::get('/hours/{date}/{car}',['as'=>'hours', 'uses'=>'TestDrivesController@showHours']);
    Route::post('/supp-day/{id}',['as'=>'supp-day', 'uses'=>'TestDrivesController@destroy']);
    Route::post('/add-hour/{id}',['as'=>'add-hour', 'uses'=>'TestDrivesController@addHour']);
-
+   Route::get('/cancel-hour/{id}/{id2}',['as'=>'cancel-hour', 'uses'=>'TestDrivesController@cancelHour']);
 
 
 });
@@ -64,6 +66,8 @@ Route::group(['prefix'=>'dashboard/customers','middleware' => ['web']], function
    Route::get('edit/{id}',['as'=>'editcustomer', 'uses'=>'CustomersController@edit']);
    Route::put('update/{id}',['as'=>'updatecustomer', 'uses'=>'CustomersController@update']);
    Route::post('/add-hour/{id}',['as'=>'add-hour', 'uses'=>'TestDrivesController@addHour']);
+   Route::get('/offlineCustomers',['as'=>'OfflineCustomerIndex', 'uses'=>'CustomersController@OfflineCustomerIndex']);
+   Route::post('addcustomerOffline', ['as'=>'addcustomerOffline', 'uses'=>'CustomersController@storeOffline']);
 });
 
 //  Routes of Users

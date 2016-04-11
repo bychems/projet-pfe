@@ -14,10 +14,20 @@
 
     {!! HTML::style('project/resources/assets/font-awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('project/resources/assets/dist/css/bootstrap.min.css') !!}
+
     {!! HTML::style('project/resources/assets/plugins/datePicker/css/datepicker.css') !!}
     {!! HTML::style('project/resources/assets/plugins/calendar/bootstrap-datetimepicker.min.css') !!}
+
+    {!! HTML::style('project/resources/assets/plugins/datatables/css/jquery.dataTables.min.css') !!}
+
+
+    {!! HTML::style('project/resources/assets/plugins/notification/css/jquery.ambiance.css') !!}
+
     {!! HTML::style('project/resources/assets/css/style.css') !!}
+
     {!! HTML::style('project/resources/assets/plugins/owl.carousel/owl.carousel.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/owl.carousel/owl.theme.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/owl.carousel/owl.transitions.css') !!}
 
 
     @yield('css')

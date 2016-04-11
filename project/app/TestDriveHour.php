@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TestDriveHour extends Model
 {
     //
-     protected $fillable = ['hour','customer_id','day_id'];
+     protected $fillable = ['hour','state','customer_id','day_id'];
     
     public function testDriveDay(){
         return $this->belongsTo('App\TestDriveDay');
@@ -19,6 +19,6 @@ class TestDriveHour extends Model
 
     public function scopeListHeureIndispo($query,$date)
     {
-        return $query->where('day_id','=', $date);
+        return $query->where('day_id','=', $date)->where('state','=','Active');
     }
 }

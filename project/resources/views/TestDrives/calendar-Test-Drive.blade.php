@@ -1,18 +1,36 @@
-@extends("default-full-width")
+@extends("default")
 @section('title',$title)
+
+@section('banner')
+
+    <div class="banner">
+        <div class="container">
+            <div class="col-md-3" style="text-align: center"><h2>Calendrier <br> Test Drive</h2></div>
+        </div>
+    </div>
+
+@stop
+
+
 @section('content')
+
     <h1 align="center">Calendrier</h1>
+
+
 
     @if(isset($dateDispo))
         <div class="row">
             <div id="datetimepicker12" class="cal  col-md-6"></div>
 
 
-            <div class="hours col-md-6" id="listhours">
-                <h2>Les Heures de : <span class="showDate"></span></h2><hr>
-                {!! Form::open(['method'=>'post', 'url'=>route('add-hour',$carid)])!!}
+            <div class=" col-md-6" id="listhours">
+                <div class="bloc"></div>
+                <div class="chooseDate"><h1>Choisissez une date</h1></div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <h2>Les Heures de : <span class="showDate"></span></h2><hr>
+
+                    <div class="col-md-12 hours">
+                        {!! Form::open(['method'=>'post', 'url'=>route('add-hour',$carid)])!!}
                         <div class="radio h-9">
                             <label class="state"><input type="radio" name="heure" value="9" required>9</label>
                             <span></span>
@@ -47,27 +65,32 @@
                             <label class="state"><input type="radio" name="heure" value="16">16</label>
                             <span></span>
                         </div>
+
+                        <hr>
+                        {!! Form::label('',' Client:') !!}
+                        {!! Form::select('customer', $customers,null,['class'=>'form-control ']) !!}<hr>
+                        {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
+                        <button class="btn btn-success" type="submit">Réserver</button>
+
+                        {!!Form::close()!!}
+
+
+
+                        {!! Form::open(['method'=>'post', 'url'=>route('supp-day',$carid)])!!}
+                        {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
+                        <button class="btn btn-danger" type="submit">Supprimer</button>
+                        {!!Form::close()!!}
                     </div>
                 </div>
-                <hr>
-                {!! Form::label('',' Client:') !!}
-                {!! Form::select('customer', $customers,null,['class'=>'form-control ']) !!}<hr>
-                {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
-                <button class="btn btn-success" type="submit">R&eacute;server</button>
-                {!!Form::close()!!}
 
-                {!! Form::open(['method'=>'post', 'url'=>route('supp-day',$carid)])!!}
 
-                {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
-                <button class="btn btn-success" type="submit">Supprimer</button>
 
-                {!!Form::close()!!}
             </div>
         </div>
     @endif
-    <button class="btn btn-info btn-xs hidden" id="btn-anuuler"  data-id="">Annuler</button>
+    <button class="btn btn-info btn-xs hidden btn-cancel" data-id="" type="button">Annuler</button>
 @stop
-{{ Auth::user()->name}}
+
 @section('js')
     <script type="text/javascript" src="{{ url('project/resources/assets/plugins/calendar/moment.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('project/resources/assets/plugins/calendar/bootstrap-datetimepicker.min.js')}}"></script>
@@ -75,20 +98,14 @@
     <script>
 
         //hoursRoute= "";
-        idDayRoute= "{{route('hours', array(0,0) )}}";
-        idDayRoute = idDayRoute.slice(0, -3);
-        carid={{$carid}};
+        idDayRoute = "{{route('hours', array(0,0) )}}";
+        idDayRoute = idDayRoute.slice(0, - 3);
+        carid = {{$carid}};
         // hoursRoute = hoursRoute.slice(0, -1);
-        suppdayRoute= "{{route('supp-day',0)}}";
-        suppdayRoute = suppdayRoute.slice(0, -1);
-
-
-        detailUserRoute= "{{route('detailUser',0)}}";
-        detailUserRoute= detailUserRoute.slice(0, -1);
-
-        detailCustomerRoute= "{{route('afficheCustomer',0)}}";
-        detailCustomerRoute= detailCustomerRoute.slice(0, -1);
-
+        suppdayRoute = "{{route('supp-day',0)}}";
+        suppdayRoute = suppdayRoute.slice(0, - 1);
+        cancelHourRoute = "{{route('cancel-hour',array(0,0) )}}";
+        cancelHourRoute = cancelHourRoute.slice(0, - 3);
         (function (global, factory) {
             typeof exports === 'object' && typeof module !== 'undefined'
             && typeof require === 'function' ? factory(require('../moment')) :
@@ -148,11 +165,11 @@
             sideBySide: false,
             minDate : "{{$dateBegin}}",
             maxDate : "{{$dateEnd}}",
-            locale : 'fr' ,
-            disabledDates:  {!! $nondispo !!}
- });
+            locale : 'fr',
+            disabledDates:{!! $nondispo !!}
+});
 
     </script>
 
+
 @stop
-{{$nondispo}}

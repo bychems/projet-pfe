@@ -17,9 +17,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Voitures <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{route('carIndex')}}">Ajouter Voiture</a></li>
-                        <li role="separator" class="divider"></li>
                         <li><a href="{{route('carList')}}">Voitures</a></li>
-                        <li><a href="{{route('carListTestDrive')}}">Voitures Test Drive</a></li>
+
                         <li role="separator" class="divider"></li>
                         <li><a href="{{route('categoryIndex')}}" >Categories et Options</a></li>
                     </ul>
@@ -44,6 +43,13 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilisateurs <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{route('addUser')}}">Ajouter Utilisateur</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Demandes <span class="notif_all hidden"></span><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route('OfflineCustomerIndex')}}">Nouveaux clients <span class="notif_c hidden"></span></a></li>
+                        <li><a href="{{route('OfflineQuotationIndex')}}">Nouveaux devis <span class="notif_d hidden"></span></a></li>
                     </ul>
                 </li>
 

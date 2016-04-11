@@ -76,6 +76,13 @@
                             <li><a href="{{route('addUser')}}">Ajouter Utilisateur</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Demandes <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{route('OfflineCustomerIndex')}}">Nouveaux clients</a></li>
+                            <li><a href="{{route('OfflineQuotationIndex')}}">Nouveaux devis</a></li>
+                        </ul>
+                    </li>
 
                 </ul>
 
@@ -100,6 +107,7 @@
             </div>
         </div>
     </nav>
+
 
     @yield('content')
 

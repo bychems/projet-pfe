@@ -1,6 +1,17 @@
 @extends("default")
 @section('title',$title)
 
+@section('banner')
+
+    <div class="banner">
+        <div class="container">
+            <div class="col-md-3" style="text-align: center">
+                <h2>D&eacute;tail Client</h2>
+            </div>
+        </div>
+    </div>
+
+@stop
 
 @section('content')
 

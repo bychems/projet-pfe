@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -11,10 +9,7 @@ use DateTime;
 use App\TestDriveDay;
 use App\TestDriveHour;
 use App\Customer;
-
-
 class TestDrivesController extends Controller {
-
     /**
      * Display a listing of the resource.
      *
@@ -23,20 +18,16 @@ class TestDrivesController extends Controller {
     public function index() {
         //
         //dd($this->User()->id);
-
         $cars = array();
         $car = Car::all();
         $title = "Ajout Disponibilité";
         foreach ($car as $c) {
             $cars[$c->id] = $c->model;
         }
-
         $date = \Carbon\Carbon::today();
-
         $date = $date->format('Y-m-d');
         return view('TestDrives/disponibility-test-drive', ['title' => $title, 'cars' => $cars, 'date' => $date]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -45,7 +36,6 @@ class TestDrivesController extends Controller {
     public function create() {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -69,9 +59,8 @@ class TestDrivesController extends Controller {
 
                 $days =  TestDriveDay::firstOrCreate(['date_day'=>$datedebut, 'car_id'=>$car ]);
                 $day_id=$days->id;
-
                 //insertion de l'heure non disponible '13' de ce jour
-                TestDriveHour::firstOrCreate(['hour'=>13, 'customer_id'=>1,'day_id'=>$day_id ]);
+                TestDriveHour::firstOrCreate(['hour'=>13,'state'=>'Active' ,'customer_id'=>1,'day_id'=>$day_id ]);
 
 
             }
@@ -79,22 +68,14 @@ class TestDrivesController extends Controller {
             $d = date("Y-m-d", $date);
             $datedebut = new DateTime($d);
         }
-
-        $title = "List des voitures";
-
-        $cars = Car::ListCarsTestDrive()->get();
-
-        return view('Cars/list-cars-test-drive', ['title' => $title, 'cars' => $cars]);
         //get day name
         /* $date = '2016/03/03'; 
           $day = date('l', strtotime($date));
           echo $day; */
-
         // incriment of day 
         /* $date = strtotime("+1 day", strtotime("2020-02-28"));
           echo date("Y-m-d", $date); */
     }
-
     /**
      * Display the specified resource.
      *
@@ -104,7 +85,6 @@ class TestDrivesController extends Controller {
     public function show($id) {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -114,7 +94,6 @@ class TestDrivesController extends Controller {
     public function edit($id) {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -122,9 +101,14 @@ class TestDrivesController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function cancelHour($id,$id2) {
         //
+        TestDriveHour::where('id',$id2)
+            ->update(['state'=>'Inactive']) ;
+        return redirect(route('Calendar',$id));
     }
+
+
     public function showCalendar($id)
     {
         $title='Calendrier';
@@ -161,7 +145,6 @@ class TestDrivesController extends Controller {
                     $test = strtotime("+1 day", strtotime($test));
                     $test= date("Y-m-d", $test);
                 }
-
             }
             $nondispo=str_replace("-","/",json_encode($nondispo));
 
@@ -199,8 +182,7 @@ class TestDrivesController extends Controller {
                     $in['attach_id']=$cust->id;
                     $in['attach_name']=$cust->name;
                     $in['line'] = 'Pour';
-
-                    $in['id']=$hour->id;
+                    $in['id_hour']=$hour->id;
                 }
                 else {
                     $in['annuler'] = 'false';
@@ -227,7 +209,6 @@ class TestDrivesController extends Controller {
     public function destroy(Request $request ,$id) {
         $dayid=$request->id_day;
         $day=TestDriveDay::find($dayid);
-
         $day->delete();
         return redirect(route('Calendar',$id));
     }
@@ -238,11 +219,10 @@ class TestDrivesController extends Controller {
     {
         $hour= new TestDriveHour();
         $hour->hour=$request->heure;
-
+        $hour->state='Active';
         $hour->customer_id=$request->customer;
         $hour->day_id=$request->id_day;
         $hour->save();
         return redirect(route('Calendar',$id));
     }
-
 }

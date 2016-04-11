@@ -8,6 +8,12 @@
     @yield('js')
     <script src="{{ url('project/resources/assets/js/jquery.form.min.js')}}"></script>
 
+    <script src="{{ asset('project/resources/assets/plugins/notification/js/jquery.ambiance.js') }}"></script>
+
+    <script src="{{ asset('project/resources/assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('project/resources/assets/plugins/datatables/js/dataTables.bootstrap.min.js') }}"></script>
+
+
     <script src="{{ asset('project/resources/assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
 
     <script src="{{ url('project/resources/assets/js/main_1.js') }}"></script>

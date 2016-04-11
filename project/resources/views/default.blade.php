@@ -6,18 +6,16 @@
 
   <body>
   @include ('inc.menu')
-
+  @yield('banner')
   <div class="container">
+
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-9 haut">
         @yield('content')
       </div>
 
       <div class="col-md-3">
-        @if (!Auth::guest())
-          <strong>{{ Auth::user()->name }}</strong>
 
-        @endif
         <?php
         $customers = \App\Customer::GetCustomerAsUser(Auth::user()->id)->get();
         ?>

@@ -15,9 +15,18 @@ class CreateCategoriesTable extends Migration
          Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name_category');
+            $table->text('icon');
             $table->timestamps();
         });
+
+        \App\Category::create(['name_category'=>'Moteur']);
+        \App\Category::create(['name_category'=>'Cylindree']);
+        \App\Category::create(['name_category'=>'Energie']);
+        \App\Category::create(['name_category'=>'Transmission']);
+        \App\Category::create(['name_category'=>'Puissance fiscale']);
     }
+
+
 
     /**
      * Reverse the migrations.

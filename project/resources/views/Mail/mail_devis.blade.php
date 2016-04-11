@@ -110,6 +110,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="table_option">
+
                                                     @foreach($options as $option)
                                                      <tr>
                                                          <td>

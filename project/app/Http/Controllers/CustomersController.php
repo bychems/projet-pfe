@@ -10,6 +10,8 @@ use DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Psy\Util\Json;
+
 class CustomersController extends Controller
 {
     /**
@@ -46,6 +48,7 @@ class CustomersController extends Controller
     {
         //--ADD NEW CUSTOMER
         // $user::Auth
+        //dd($request);
 
         $validator = Validator::make($request->all(),
             ['cin'=> 'required|unique:customers|numeric|min:8',
@@ -152,5 +155,42 @@ class CustomersController extends Controller
             $title = "Affich Client";
             return view('Customers/customer-details', ['customer' => $customer, 'title' => $title]);
         }
+    }
+
+    public function OfflineCustomerIndex()
+    {
+        $title="Nouveaux clients";
+
+        return view('Offline/customer_offline', ['title'=>$title]);
+
+
+    }
+
+    public function storeOffline(Request $request)
+    {
+        //--ADD NEW CUSTOMER
+        // $user::Auth
+       // dd($request);
+
+            $cust=json_decode($request->hidden_customer);
+
+          $customer= new Customer();
+            $customer->name=$cust->name;
+            $customer->last_name=$cust->last_name;
+            $customer->cin=$cust->cin;
+            $customer->mail=$cust->mail;
+            $customer->adress=$cust->adress;
+            $customer->function=$cust->function;
+            $customer->phone=$cust->phone;
+            $customer->car=$cust->car;
+            $customer->commercial_id=  Controller::User()->id;
+
+           Customer::firstOrCreate(['cin' => $cust->cin]);
+
+
+        //$newCustomer =
+        // attacher client au commercial courant
+        //$newCustomer->attachUser($user);
+        return 'true';
     }
 }

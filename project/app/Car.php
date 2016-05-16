@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
-    protected $fillable = ['model','finition','consommation','picture','video','basic_price','test_drive'];
+    protected $fillable = ['finition','icon_finition','consommation','picture','video','basic_price','test_drive','model_id'];
     
     public function optioncars(){
         return $this->hasMany('App\OptionCar');
@@ -18,7 +18,11 @@ class Car extends Model
 
     public function scopeListCarsTestDrive($query)
     {
-        return $query->where('test_drive', '=', 1);
+        return $query->where('test_drive','=', 1);
+    }
+
+    public function modele(){
+        return $this->belongsTo('App\Modele');
     }
     
 }

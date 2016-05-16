@@ -14,7 +14,6 @@ class CreateQuotationTable extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('options');
             $table->float('total_price');
              $table->integer('id_car')->unsigned();
             $table->foreign('id_car')->references('id')->on('cars')->onUpdate('cascade')->onDelete('cascade');

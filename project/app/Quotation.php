@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quotation extends Model
 {
-    protected $fillable = ['id','options','total_price','id_car','id_customer'];
+    protected $fillable = ['id','option_list','total_price','id_car','id_customer'];
+
+    public function quotationOptions(){
+        return $this->hasMany('App\QuotationOption');
+    }
+
 }

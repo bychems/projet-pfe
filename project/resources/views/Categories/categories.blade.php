@@ -22,7 +22,7 @@
             {!! Form::open(['method'=>'post','files'=>true ,'url'=>route('categoryStore') ])!!}
             <div class="form-group">
                 {!! Form::label('nameL','Nom') !!}
-                {!! Form::text('name_category', '',['class'=>'form-control', 'placeholder'=>'Nom de la Cat&eacute;gorie']) !!}
+                {!! Form::text('name_category', '',['class'=>'form-control', 'placeholder'=>'Nom de la Cat&eacute;gorie', 'required'=>true]) !!}
             </div>
             <div class="row">
                 <div class="form-group col-md-8">
@@ -30,9 +30,10 @@
                     {!! Form::file('icon') !!}
                 </div>
             </div>
+            <br>
             <div class="row">
-                <div class="col-md-2">
-                    {!! Form::label('','Option :') !!}
+                <div class="col-md-6">
+                    {!! Form::label('','Nouvelle option dans la cat&eacute;gorie :') !!}
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-info nouvelle_option" ><i class="fa fa-plus" ></i>Ajouter</button>
@@ -42,8 +43,10 @@
                 </div>
             </div>
             <br>
-            <button class="btn btn-success droite" >save</button>
+            <button class="btn btn-success droite" >Enregistrer cat&eacute;gorie</button>
             {!! Form::close()!!}
+
+            <div style="margin-top: 60px">
             @if(isset($categories))
                 @foreach($categories as $c)
                     @if (isset($c))
@@ -54,7 +57,7 @@
                                     Categorie : {{$c->name_category}}
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" class="fa fa-times-circle suppCat {{$c->id}}" data-id="{{$c->id}}" type='submit' data-toggle="modal" data-target="#confirmDelete" data-title="Supprimer Cat&eacute;gorie" data-message='Etes vous sure de vouloir supprimer cette cat&eacute;gorie?'></button>
+                                    <button type="button" title="Supprimer" class="fa fa-times-circle suppCat {{$c->id}}" data-id="{{$c->id}}" type='submit' data-toggle="modal" data-target="#confirmDelete" data-title="Supprimer Cat&eacute;gorie" data-message='Etes vous sure de vouloir supprimer cette cat&eacute;gorie?'></button>
                                 </div>
                             </div>
                         </h3>
@@ -69,11 +72,11 @@
                                         <p><b>Nom: </b>{{$option->name}}</p>
                                     </div>
                                     <div class="col-md-5">
-                                        <p><b>D&eacute;scription: </b>{{$option->description}}</p>
+                                        <p><b>Description: </b>{{$option->description}}</p>
                                     </div>
                                     <div class="col-md-1">
 
-                                        <button type="button" class="fa fa-times-circle suppOp {{$option->id}}"  type='submit' data-toggle="modal" data-target="#confirmDelete" data-title="Supprimer Option" data-message='Etes vous sure de vouloir supprimer cette option?' data-id="{{$option->id}}"></button>
+                                        <button type="button" title="Supprimer" class="fa fa-times-circle suppOp {{$option->id}}"  type='submit' data-toggle="modal" data-target="#confirmDelete" data-title="Supprimer Option" data-message='Etes vous sure de vouloir supprimer cette option?' data-id="{{$option->id}}"></button>
 
                                     </div>
                                 </div>
@@ -102,6 +105,7 @@
                 @endforeach
 
             @endif
+            </div>
         </div>
     </div>
     <div class="hidden row" id="to-clone">
@@ -109,13 +113,13 @@
         <div class="col-md-4">
             <div class="form-group">
                 {!! Form::label('','Nom') !!}
-                {!! Form::text('option_name', '',['class'=>'form-control name', 'placeholder'=>'Nom de l option']) !!}
+                {!! Form::text('option_name', '',['class'=>'form-control name', 'placeholder'=>'Nom de l option', 'required'=>true]) !!}
             </div>
         </div>
         <div class="col-md-8">
             <div class="form-group">
-                {!! Form::label('','D&eacute;scription') !!}
-                {!! Form::textarea('option_description', '',['class'=>'form-control description', 'placeholder'=>'D&eacute;scription de l option', 'rows'=>1]) !!}
+                {!! Form::label('','Description') !!}
+                {!! Form::textarea('option_description', '',['class'=>'form-control description','style'=> 'width: 262px;', 'placeholder'=>'Description de l option', 'rows'=>1, 'required'=>true]) !!}
             </div>
         </div>
     </div>
@@ -128,7 +132,7 @@
             <p class="name"><b>Nom: </b></p>
         </div>
         <div class="col-md-5">
-            <p class="desc"><b>D&eacute;scription: </b></p>
+            <p class="desc"><b>description: </b></p>
         </div>
         <div class="col-md-1">
 
@@ -145,9 +149,10 @@
 @section('js')
     <script type="text/javascript">
         var route = "{{route('addoption')}}";
-        var suppOpRoute="{{route('destroyOpt',0)}}";
+        var rolePermissionRoute="{{route('destroyOpt',0)}}";
+        var suppOpRoute="{{route('destroyOpt',0)}}"
         suppOpRoute = suppOpRoute.slice(0, - 1);
-        var suppCatRoute="{{route('destroyCat',0)}}"
+        var suppCatRoute="{{route('destroyCat',0)}}";
         suppCatRoute = suppCatRoute.slice(0, - 1);
 
 
@@ -218,6 +223,7 @@
 
                 },
                 fail: function(response) {
+
                 }
             });
         });

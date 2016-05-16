@@ -35,7 +35,7 @@
                             <label class="col-md-4 control-label">Nom</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Nom et prenom du client" name="nom_prenom">
+                                <input type="text" class="form-control" placeholder="Nom et prenom du client" name="nom_prenom" required>
                             </div>
                         </div>
 
@@ -44,7 +44,7 @@
                             <label class="col-md-4 control-label">Email</label>
 
                             <div class="col-md-6">
-                                <input type="email" class="form-control" placeholder="Email du client" name="email">
+                                <input type="email" class="form-control" placeholder="Email du client" name="email" required>
                             </div>
                         </div>
 

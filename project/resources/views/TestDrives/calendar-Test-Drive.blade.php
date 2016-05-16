@@ -1,4 +1,4 @@
-@extends("default")
+@extends("default-full-width")
 @section('title',$title)
 
 @section('banner')
@@ -14,22 +14,32 @@
 
 @section('content')
 
-    <h1 align="center">Calendrier</h1>
+
 
 
 
     @if(isset($dateDispo))
+        <br>
         <div class="row">
-            <div id="datetimepicker12" class="cal  col-md-6"></div>
+            <div class="col-md-6">
+                <h2>Calendrier</h2>
+                <div id="datetimepicker12"  class="cal"> </div>
+                <hr>
+                {!! Form::open(['method'=>'post', 'class'=>'supp_day', 'url'=>route('supp-day',$carid)])!!}
+                {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
+                <button class="btn btn-danger" type='submit'  data-target="#confirmDelete" data-title="Supprimer Option" data-message='Etes vous sure de vouloir supprimer cette option?'>Supprimer Jour</button>
+                {!!Form::close()!!}
+            </div>
 
 
             <div class=" col-md-6" id="listhours">
-                <div class="bloc"></div>
-                <div class="chooseDate"><h1>Choisissez une date</h1></div>
+                <div class="bloc"><h2>Choisissez une date</h2></div>
+                <div class="chooseDate"></div>
                 <div class="row">
-                    <h2>Les Heures de : <span class="showDate"></span></h2><hr>
+
 
                     <div class="col-md-12 hours">
+                        <h2>Les Heures de : <span class="showDate"></span></h2><hr>
                         {!! Form::open(['method'=>'post', 'url'=>route('add-hour',$carid)])!!}
                         <div class="radio h-9">
                             <label class="state"><input type="radio" name="heure" value="9" required>9</label>
@@ -70,16 +80,13 @@
                         {!! Form::label('',' Client:') !!}
                         {!! Form::select('customer', $customers,null,['class'=>'form-control ']) !!}<hr>
                         {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
-                        <button class="btn btn-success" type="submit">Réserver</button>
+                        <button class="btn btn-success" type="submit">R&eacute;server</button>
 
                         {!!Form::close()!!}
 
 
 
-                        {!! Form::open(['method'=>'post', 'url'=>route('supp-day',$carid)])!!}
-                        {!! Form::hidden('id_day', "",['class'=>'day_id']) !!}
-                        <button class="btn btn-danger" type="submit">Supprimer</button>
-                        {!!Form::close()!!}
+
                     </div>
                 </div>
 
@@ -89,6 +96,7 @@
         </div>
     @endif
     <button class="btn btn-info btn-xs hidden btn-cancel" data-id="" type="button">Annuler</button>
+    @include('delete_confirm')
 @stop
 
 @section('js')
@@ -168,6 +176,109 @@
             locale : 'fr',
             disabledDates:{!! $nondispo !!}
 });
+
+        function testday()
+        {
+            var test = false;
+            var i = 9;
+            while ((i <= 16) && (test == false)) {
+
+                if (i != 13) {
+
+                    if ($('.h-' + i).find('input').attr('disabled') == 'disabled') {
+
+                        test = true;
+                    }
+                }
+                i++;
+            }
+
+            return test;
+        }
+
+
+        $('.supp_day').on('submit', function (e) {
+            e.preventDefault();
+
+            if (testday()) {
+                console.log('true');
+                    var ex = $(this).find('.btn-danger');
+                    $message = $(ex).attr('data-message');
+                    $('#confirmDelete').find('.modal-body p').text($message);
+                    $title = $(ex).attr('data-title');
+                    $('#confirmDelete').find('.modal-title').text($title);
+                $('#confirmDelete').modal('show');
+
+
+
+            }
+            else{
+                $(this)[0].submit();
+            }
+
+        });
+
+
+
+        $('#confirmDelete').on('show.bs.modal', function (e) {
+            $message = $(e.relatedTarget).attr('data-message');
+            $(this).find('.modal-body p').text($message);
+            $title = $(e.relatedTarget).attr('data-title');
+            $(this).find('.modal-title').text($title);
+            $id = $(e.relatedTarget).attr('data-id');
+
+            // Pass form reference to modal for submission on yes/ok
+            //var form = $(e.relatedTarget).closest('form');
+            $(this).find('.modal-footer #confirm').data('id', $id);
+        });
+
+        <!-- Form confirm (yes/ok) handler, submits form -->
+        $('#confirmDelete').find('.modal-footer #confirm').on('click', function(e){
+            e.preventDefault();
+
+            $id=$(this).data('id');
+
+            var id=$(this).attr('data-id');
+            var Route=cancelHourRoute+carid+'/'+id;
+            var res= $(this).parent();
+            //console.log(route)
+            $.ajax({
+                url: Route,
+                type: 'GET',
+                data: '',
+                dataType: 'text',
+                success: function(response) {
+                    res.parent().removeClass('disabled')
+                            .find('input').attr('disabled', false);
+                    res.html('');
+
+                },
+                fail: function(response) {
+                }
+            });
+            var Route=suppOpRoute+$id;
+            var res= $('.'+$id).parent();
+
+            $.ajax({
+                url: Route,
+                type: 'GET',
+                data: '',
+                dataType: 'text',
+                success: function(response) {
+                    res.parent().remove();
+
+                },
+                fail: function(response) {
+                }
+            });
+        });
+
+
+
+        <!-- Form confirm (yes/ok) handler, submits form -->
+
+
+
 
     </script>
 

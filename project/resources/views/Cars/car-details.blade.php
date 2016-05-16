@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-10">
             <h1>
-                    Voiture: {{$car->model}}
+                    Voiture: {{$car->finition}}
             </h1>
             <!-- Wrapper for slides -->
             <div class="owl-carousel ">
@@ -49,7 +49,7 @@
     @if (isset($categories))
         {!! Form::open(['class'=>'form-devis','url'=>route('devisStore')])!!}
         {!! Form::hidden('id_car', $car->id,['id'=>'id_car']) !!}
-        {!! Form::hidden('car_model', $car->model,['id'=>'car_model']) !!}
+        {!! Form::hidden('car_finition', $car->finition,['id'=>'car_finition']) !!}
         <div class="row milieu">
         <div class="form-detail">
 
@@ -63,7 +63,7 @@
                         @foreach($category['options'] as $option)
 
                             <label class="btn btn-primary ">
-                                <input type="radio" value="{{$option['name']}}"  data-category="{{$category['name']}}" data-name="{{$option['name']}}" data-description="{{$option['description']}}" data-price="{{$option['price']}}" id="id-devis" class="opt-checked"> {{$option['name']}}
+                                <input type="radio" value="{{$option['name']}}"  data-category="{{$category['name']}}" data-name="{{$option['name']}}" data-id="{{$option['id']}}" data-description="{{$option['description']}}" data-price="{{$option['price']}}" id="id-devis" class="opt-checked"> {{$option['name']}}
                             </label>
 
                         @endforeach
@@ -85,11 +85,11 @@
             <h1 id="devis">Apercu du devis</h1><hr>
             <div class="row">
                 <div class="col-md-2">
-                    <strong>Mod&egrave;le choisi : </strong>
+                    <strong>Voiture choisi : </strong>
                 </div>
                 <div class="col-md-3">
-                    {!! Form::hidden('model', $car->model) !!}
-                    <strong>{{$car->model}}</strong>
+                    {!! Form::hidden('finition', $car->finition) !!}
+                    <strong>{{$car->finition}}</strong>
                 </div>
             </div>
 
@@ -175,8 +175,8 @@
 
 
 
-        <div class="hidden" id="new_customer_div">
-        <h1>Ajouter Client</h1>
+        <div class="hidden" id="new_customer_div" style="height: 300px;">
+
 
         <div class="contenu">
 
@@ -192,63 +192,51 @@
 
             @endif
 
-
             <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Nom') !!}
-                    {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client']) !!}
+                <div class="row" style="margin-left: 80px">
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Nom',['class'=>'control-label']) !!}
+                        {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client', 'required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Pr&eacute;nom') !!}
+                        {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Pr&eacute;nom du client', 'required'=>true]) !!}
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left: 80px">
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Cin') !!}
+                        {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN', 'required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Email') !!}
+                        {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client', 'required'=>true]) !!}
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left: 80px">
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Adresse') !!}
+                        {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client', 'required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Fonction') !!}<br>
+                        {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client', 'required'=>true]) !!}
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left: 80px">
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','T&eacute;l&eacute;phone') !!}<br>
+                        {!! Form::text('phone', '',['class'=>'form-control', 'placeholder'=>'T&eacute;l&eacute;phone du client', 'required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-md-5">
+                        {!! Form::label('','Voiture') !!}<br>
+                        {!! Form::text('car', '',['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Pr&eacute;nom') !!}
-                    {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Pr&eacute;nom du client']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Cin') !!}
-                    {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Email') !!}
-                    {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Adresse') !!}
-                    {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Fonction') !!}<br>
-                    {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','T&eacute;l&eacute;phone') !!}<br>
-                    {!! Form::text('phone', '',['class'=>'form-control', 'placeholder'=>'T&eacute;l&eacute;phone du client']) !!}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    {!! Form::label('','Voiture') !!}<br>
-                    {!! Form::text('car', '',['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
-                </div>
-            </div>
-
 
         </div>
 

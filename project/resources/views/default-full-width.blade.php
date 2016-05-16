@@ -5,6 +5,7 @@
 <body>
 
 @include('inc.menu')
+@yield('banner')
 
 <div class="container">
     <div class="row">

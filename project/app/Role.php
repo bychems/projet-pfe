@@ -9,4 +9,14 @@ class Role extends EntrustRole
     {
         return $this->belongsToMany('App\User');
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Permission');
+    }
+
+    public function scopegetDisplayNameRole($query,$display_name)
+    {
+        return $query->where('display_name','=', $display_name);
+    }
 }

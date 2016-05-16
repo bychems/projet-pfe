@@ -23,6 +23,7 @@
         <thead>
         <tr>
             <th class="milieu">Mod&egrave;le</th>
+             <th class="milieu">Finition</th>
             <th class="milieu">Prix basique</th>
             <th class="milieu">Disponibilit&eacute; Test Drive</th>
 
@@ -32,10 +33,11 @@
         </thead>
         <tbody>
         @foreach($cars as $car)
-            @if(!empty($car->model))
+            @if(!empty($car->finition))
 
                 <tr>
-                    <td class="milieu">{{ $car->model }}</td>
+                    <td class="milieu">{{ $car->modele()->get()[0]->name }}</td>
+                    <td class="milieu">{{ $car->finition }}</td>
                     <td class="milieu">{{ $car->basic_price }}</td>
                     <td class="milieu">
                         @if($car->test_drive ==1)

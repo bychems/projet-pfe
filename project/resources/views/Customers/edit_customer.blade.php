@@ -1,10 +1,22 @@
 @extends("default")
 @section('title',$title)
 
+@section('banner')
+
+    <div class="banner">
+        <div class="container">
+            <div class="col-md-3" style="text-align: center">
+                <h2>Modifier Client</h2>
+            </div>
+        </div>
+    </div>
+
+@stop
+
 @section('content')
 
 
-    <h1>Modifier Client</h1>
+
     <div class="contenu">
     {!! Form::model($customer, ['method'=>'put', 'url'=>route('updatecustomer',$customer->id ) ])!!}
 
@@ -53,7 +65,7 @@
         {!! Form::label('','Voiture') !!}<br>
         {!! Form::text('car',  null,['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
     </div>
-    <button class="btn btn-success" type="submit">save</button>
+    <button class="btn btn-success" type="submit">Modifier</button>
     </div>
     {!! Form::close() !!}
 @stop

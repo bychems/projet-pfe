@@ -18,4 +18,32 @@ class Controller extends BaseController
         $user = \Auth::user();
         return $user;
     }
+
+    static function getextention($file, $ext=array()){
+        $e = explode(".", $file);
+        if(in_array($e[count($e)-1], $ext)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    static function getImages($dir){
+        $dir = base_path($dir);
+        $list = array();
+        if (is_dir($dir)){
+            if ($dh = opendir($dir)){
+                while (($file = readdir($dh)) !== false ){
+                    if($file!="." && $file!=".."){
+                        if(Controller::getextention($file, ['jpg', 'png', 'jpeg', 'gif'])){
+                            array_push($list, "uploads/".$file);
+                        }
+
+                    }
+                }
+                closedir($dh);
+            }
+        }
+        return $list;
+    }
 }

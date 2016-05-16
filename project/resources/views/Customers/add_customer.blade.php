@@ -3,7 +3,7 @@
 
 @section('banner')
 
-    <div class="banner">
+    <div class="banneer">
         <div class="container">
             <div class="col-md-3" style="text-align: center">
                 <h2>Ajouter Client</h2>
@@ -32,70 +32,63 @@
 
     @endif
 
+            <div class="row">
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Nom') !!}
-            {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client']) !!}
-        </div>
-    </div>
+                            <div class="row" style="margin-left: 80px">
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Nom',['class'=>'control-label']) !!}
+                                    {!! Form::text('name', '',['class'=>'form-control', 'placeholder'=>'Nom du client', 'required'=>true]) !!}
+                                </div>
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Pr&eacute;nom') !!}
+                                    {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Pr&eacute;nom du client', 'required'=>true]) !!}
+                                </div>
+                            </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Pr&eacute;nom') !!}
-            {!! Form::text('last_name', '',['class'=>'form-control', 'placeholder'=>'Pr&eacute;nom du client']) !!}
-        </div>
-    </div>
+                            <div class="row" style="margin-left: 80px">
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Cin') !!}
+                                    {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN', 'required'=>true]) !!}
+                                </div>
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Email') !!}
+                                    {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client', 'required'=>true]) !!}
+                                </div>
+                            </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Cin') !!}
-            {!! Form::text('cin', '',['class'=>'form-control', 'placeholder'=>'Num CIN']) !!}
-        </div>
-    </div>
+                            <div class="row" style="margin-left: 80px">
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Adresse') !!}
+                                    {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client', 'required'=>true]) !!}
+                                </div>
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Fonction') !!}<br>
+                                    {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client', 'required'=>true]) !!}
+                                </div>
+                            </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Email') !!}
-            {!! Form::text('mail', '',['class'=>'form-control', 'placeholder'=>'Email du client']) !!}
-        </div>
-    </div>
+                            <div class="row" style="margin-left: 80px">
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','T&eacute;l&eacute;phone') !!}<br>
+                                    {!! Form::text('phone', '',['class'=>'form-control', 'placeholder'=>'T&eacute;l&eacute;phone du client', 'required'=>true]) !!}
+                                </div>
+                                <div class="form-group col-md-5">
+                                    {!! Form::label('','Voiture') !!}<br>
+                                    {!! Form::text('car', '',['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
+                                </div>
+                            </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Adresse') !!}
-            {!! Form::text('adress', '',['class'=>'form-control', 'placeholder'=>'Adresse du client']) !!}
-        </div>
-    </div>
+                            <div class="row" style="margin-left: 80px">
+                                <div class="col-md-8">
+                                   <button class="btn btn-success save" >Enregistrer</button>
+                                </div>
+                            </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Fonction') !!}<br>
-            {!! Form::text('function', '',['class'=>'form-control', 'placeholder'=>'Fonction du client']) !!}
-        </div>
-    </div>
+            </div>
+   </div>
+    {!! Form::close()!!}
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','T&eacute;l&eacute;phone') !!}<br>
-            {!! Form::text('phone', '',['class'=>'form-control', 'placeholder'=>'T&eacute;l&eacute;phone du client']) !!}
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            {!! Form::label('','Voiture') !!}<br>
-            {!! Form::text('car', '',['class'=>'form-control', 'placeholder'=>'Voiture du client']) !!}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8">
-           <button class="btn btn-success save" >Enregistrer</button>
-        </div>
-    </div>
-</div>
-    {!! Form::close() !!}
 
 @stop
 
@@ -131,12 +124,14 @@
         });
     </script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/UpUp/0.2.0/upup.min.js"></script>
+    <script src="{{ asset('project/resources/assets/plugins/upup/upup.min.js') }}"></script>
     <script>
         UpUp.start({
             'content-url': 'http://localhost:90/projet-laravel/dashboard/customers',
+            'assets': // Save the following files to cache as well
+                 //   ['css/offline.css', 'css/bootstrap.min.css', 'img/mb-offline.png', 'img/logo.png', 'img/sunset.jpg'],
+                    ['http://www.eryk.fr/wp-content/uploads/2016/03/Audi-1.jpg']
 
-            'service-worker-url': '/upup.sw.min.js'
         });
     </script>
 

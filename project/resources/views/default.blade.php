@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
+
 
 @include ('inc.head')
 
@@ -26,7 +27,7 @@
           @if(isset($customers))
               @foreach($customers as $customer)
                 @if(!empty($customer->name))
-                  <li><a href="{{route('afficheCustomer', $customer->id)}}">{{ $customer->name }} {{$customer->last_name}}</a></li>
+                  <li><a href="{{route('afficheCustomer', $customer->id)}}" title="D&eacute;tail">{{ $customer->name }} {{$customer->last_name}}</a></li>
                 @endif
               @endforeach
           @endif

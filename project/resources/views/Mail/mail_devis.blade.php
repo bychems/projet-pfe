@@ -54,9 +54,6 @@
 
 
 
-
-
-
                 <tr>
                     <td height="40"></td>
                 </tr>
@@ -73,24 +70,23 @@
                                         <!--img-->
                                         <tbody><tr>
                                             <td align="center" style="line-height: 0px;">
-                                                <img style="display:block; line-height:0px; font-size:0px; border:0px;" src="images/profile.png" width="100" height="100" alt="logo">
+                                                <img style="display:block; line-height:0px; font-size:0px; border:0px;" src="http://www.zeroto60times.com/blog/wp-content/uploads/2013/02/audi-cars-logo-emblem.jpg" width="150" height="150" alt="logo">
                                             </td>
                                         </tr>
                                         <!--end img-->
                                         <tr>
                                             <td>
-                                        <h1 id="devis">Apercu du devis</h1><hr>
+                                        <div id="devis" class="milieu" style="margin-top: 20px; font-weight: bold; text-align: center; font-size: 30px">DEVIS</div><br><br><hr>
                                         <div class="row">
-                                            <div >
-                                                <strong>Client : {{$name}} {{$last_name}}</strong>
+                                            <div>
+                                                <strong>Client : {{$name}} {{$last_name}}</strong><span style="float: right"><strong>Date : {{$datetime}}</strong></span>
                                             </div>
 
                                         </div>
                                         <div class="row">
-                                            <div >
-                                                <strong>Modele choisi : {{$model}}</strong>
+                                            <div>
+                                                <strong>Voiture choisi : {{$finition}}</strong><span style="float: right"><strong>Affaire suivi par :  {{ Auth::user()->name }}</strong></span>
                                             </div>
-
                                         </div>
 
                                         <hr>
@@ -217,9 +213,9 @@
 
                 <!-- copyright -->
                 <tr>
-                    <td align="center" style="font-family: 'Open Sans', Arial, sans-serif; font-size:13px; color:#ffffff; line-height:30px;">
-                        © 2016
-                        <a href="access.tn" style="font-weight: bold;">Access.tn</a>
+                    <td align="center" style="font-family: 'Open Sans', Arial, sans-serif; font-size:13px; background-color: #ccc; color:#ffffff; line-height:30px;">
+
+                        <a href="access.tn" style="font-weight: bold;">Audi.tn</a>
                         . All Rights Reserved.
                     </td>
                 </tr>

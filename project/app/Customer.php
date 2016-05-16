@@ -28,4 +28,9 @@ class Customer extends Model
     {
         return $query->where('commercial_id', '=', $id);
     }
+
+    public function scopeGetCinCustomer($query,$cin)
+    {
+        return $query->where('cin', '=', $cin);
+    }
 }

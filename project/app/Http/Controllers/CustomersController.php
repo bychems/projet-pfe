@@ -152,7 +152,7 @@ class CustomersController extends Controller
         if (isset($id) && !empty($id)) {
             $customer = Customer::findOrFail($id);
 
-            $title = "Affich Client";
+            $title = "D&eacute;tail Client";
             return view('Customers/customer-details', ['customer' => $customer, 'title' => $title]);
         }
     }
@@ -170,27 +170,32 @@ class CustomersController extends Controller
     {
         //--ADD NEW CUSTOMER
         // $user::Auth
-       // dd($request);
-
-            $cust=json_decode($request->hidden_customer);
-
-          $customer= new Customer();
-            $customer->name=$cust->name;
-            $customer->last_name=$cust->last_name;
-            $customer->cin=$cust->cin;
-            $customer->mail=$cust->mail;
-            $customer->adress=$cust->adress;
-            $customer->function=$cust->function;
-            $customer->phone=$cust->phone;
-            $customer->car=$cust->car;
-            $customer->commercial_id=  Controller::User()->id;
-
-           Customer::firstOrCreate(['cin' => $cust->cin]);
+        // dd($request);
 
 
-        //$newCustomer =
-        // attacher client au commercial courant
-        //$newCustomer->attachUser($user);
-        return 'true';
+        $cust=json_decode($request->hidden_customer, false);
+        $testCin=Customer::GetCinCustomer($cust->cin)->get();
+
+        if(!isset($testCin[0])) {
+            $customer = new Customer();
+            $customer->name = $cust->name;
+            $customer->last_name = $cust->last_name;
+            $customer->cin = $cust->cin;
+            $customer->mail = $cust->mail;
+            $customer->adress = $cust->adress;
+            $customer->function = $cust->function;
+            $customer->phone = $cust->phone;
+            $customer->car = $cust->car;
+            $customer->commercial_id = Controller::User()->id;
+
+            $customer->save();
+            //Customer::firstOrCreate(['cin' => $cust->cin]);
+            //$newCustomer =
+            // attacher client au commercial courant
+            //$newCustomer->attachUser($user);
+            return 'true';
+        }else{
+            return 'false';
+        }
     }
 }

@@ -15,6 +15,8 @@
 
 
     <script src="{{ asset('project/resources/assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('project/resources/assets/plugins/radio/js/ion.checkRadio.min.js') }}"></script>
+    <script src="{{ asset('project/resources/assets/plugins/scroll/jquery.mCustomScrollbar.concat.min.js') }}"></script>
 
     <script src="{{ url('project/resources/assets/js/main_1.js') }}"></script>
     <!--fin js-->

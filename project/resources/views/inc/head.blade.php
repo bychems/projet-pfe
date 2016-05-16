@@ -6,7 +6,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/jpg" href="{{ asset('project/uploads/audi.jpg')}}" />
 
     <title>@yield('title')</title>
 
@@ -20,7 +20,9 @@
 
     {!! HTML::style('project/resources/assets/plugins/datatables/css/jquery.dataTables.min.css') !!}
 
-
+    {!! HTML::style('project/resources/assets/plugins/scroll/jquery.mCustomScrollbar.min.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/radio/css/ion.checkRadio.html5.css') !!}
+    {!! HTML::style('project/resources/assets/plugins/radio/css/ion.checkRadio.css') !!}
     {!! HTML::style('project/resources/assets/plugins/notification/css/jquery.ambiance.css') !!}
 
     {!! HTML::style('project/resources/assets/css/style.css') !!}

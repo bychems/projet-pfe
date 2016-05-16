@@ -164,21 +164,25 @@ $('.create-devis').on('click',function(e) {
     var i = 0;
 
    $('.btn-group').each(function(){
+       if($(this).find('.active').length!=0) {
+           console.log('trueeeee');
+           i++;
+           data[i] = {};
+           $(this).addClass('test' + i);
 
-       i++;
-       data[i] =  {};
-       $(this).addClass('test'+i);
-
-       var el    = $(this).find('.active').find('input');
-       data[i]['name'] = el.data('name');
-       data[i]['desc'] = el.data('description');
-       data[i]['price']  = el.data('price');
+           var el = $(this).find('.active').find('input');
+           data[i]['name'] = el.data('name');
+           data[i]['desc'] = el.data('description');
+           data[i]['price'] = el.data('price');
+           data[i]['id'] = el.data('id');
+       }
    });
 
     //console.log(data);
     var prix_tot=0;
     var json_obj = $.parseJSON(JSON.stringify(data));
     console.log(data);
+
     $('#list_options').val(JSON.stringify(data));
     for(var i in json_obj)
     {
@@ -189,8 +193,8 @@ $('.create-devis').on('click',function(e) {
        $('.table .table_option').append('<tr><td>'+name+'</td><td>'+desc+'</td><td>'+price+' DT</td></tr>');
     }
 
-    var prix_totale_option = $(this).parent().parent().find('.prix_tot_opt');
-    prix_totale_option.text(prix_tot+'DT');
+
+    $('.prix_tot_opt').text(prix_tot+'DT');
     $('#prix_options').val(prix_tot);
 
     var prix_basique=$(this).attr('data-price-car');
@@ -200,11 +204,8 @@ $('.create-devis').on('click',function(e) {
     var prix_totale_voiture = $(this).parent().parent().find('.prix_tot_car');
     prix_totale_voiture.text(prix_tot_car+'DT');
     $('#total_price_car').val(prix_tot_car);
-    //var el=$('#to-clone').clone().removeClass('hidden').attr('id','').addClass('row');
-    //var nb=amo.find('.row').length;
 
-    //el.find('input.name').attr('name','name_option_'+nb).val('');
-    //el.find('textarea.description').attr('name','description_option_'+nb).val('');
+    $(this).addClass('hidden');
 
 
 });
@@ -289,11 +290,12 @@ $('body').on('click','.btn-cancel', function(e){
 var datepicker  = $('#datetimepicker12');
 var datepickerTD  = $('#datetimepicker12 td');
 
-datepicker.on('click', '.day:not(.disabled)', function(e){
+
+$('body').on('click', '#datetimepicker12 .day:not(.disabled)', function(e){
     e.preventDefault();
-    $('.bloc').remove();
+    $('.bloc').fadeOut();
     $('.chooseDate').remove();
-    datepickerTD.removeClass('clicked')
+    $('#datetimepicker12 td').removeClass('clicked')
     $(this).addClass('clicked');
     var dates=$(this).attr('data-day');
     $('.showDate').html(dates);
@@ -322,7 +324,7 @@ datepicker.on('click', '.day:not(.disabled)', function(e){
             }
             else
             {
-                state='(réservée)';
+                state='(r&eacuteserv&eacute;e)';
             }
                 $('.h-'+json_obj[i].h).addClass('disabled').find('input').attr('disabled', true) ;
 
@@ -521,8 +523,8 @@ function getDevis(classFormCustomer) {
         var val = $('#id_car').val();
         obj_devis[key] = val;
 
-        var key = $('#car_model').attr('name');
-        var val = $('#car_model').val();
+        var key = $('#car_finition').attr('name');
+        var val = $('#car_finition').val();
         obj_devis[key] = val;
 
         var key = $('#basic_price').attr('name');
@@ -556,15 +558,17 @@ function getDevis(classFormCustomer) {
     //Objet liste option
         var i = 0;
         $('.btn-group').each(function(){
+            if($(this).find('.active').length!=0) {
+                i++;
+                data[i] = {};
+                $(this).addClass('test' + i);
 
-            i++;
-            data[i] =  {};
-            $(this).addClass('test'+i);
-
-            var el    = $(this).find('.active').find('input');
-            data[i]['name'] = el.data('name');
-            data[i]['desc'] = el.data('description');
-            data[i]['price']  = el.data('price');
+                var el = $(this).find('.active').find('input');
+                data[i]['name'] = el.data('name');
+                data[i]['desc'] = el.data('description');
+                data[i]['price'] = el.data('price');
+                data[i]['id'] = el.data('id');
+            }
         });
         var key = $('#list_options').attr('name');
         var val = data;
@@ -588,8 +592,8 @@ function getDevis(classFormCustomer) {
         var val = $('#id_car').val();
         obj_devis[key] = val;
 
-        var key = $('#car_model').attr('name');
-        var val = $('#car_model').val();
+        var key = $('#car_finition').attr('name');
+        var val = $('#car_finition').val();
         obj_devis[key] = val;
 
         var key = $('#basic_price').attr('name');
@@ -629,7 +633,8 @@ function getDevis(classFormCustomer) {
         //LIST OPTION
         var i = 0;
         $('.btn-group').each(function(){
-
+            if($(this).find('.active').length!=0)
+            {
             i++;
             data[i] =  {};
             $(this).addClass('test'+i);
@@ -638,7 +643,8 @@ function getDevis(classFormCustomer) {
             data[i]['name'] = el.data('name');
             data[i]['desc'] = el.data('description');
             data[i]['price']  = el.data('price');
-        });
+            }
+            });
         var key = $('#list_options').attr('name');
         var val = data;
         obj_devis[key] = val;
@@ -681,7 +687,7 @@ function storeDevisOnline(){
 
     var x  = $('.form-devis').serialize();
     console.log(x);
-   //storeDevisRoute;
+
     $.ajax({
         url: storeDevisRoute,
         type: 'POST',
@@ -703,7 +709,7 @@ function storeDevisOnline(){
 var dc=1;
 var d=1;
 
-//------------------------ STORE DEVIS OFFINE ------------------ //
+//------------------------ STORE DEVIS OFFLINE ------------------ //
 function storeDevisOffline(classFormCustomer){
 
 
@@ -776,7 +782,7 @@ function getNewCustomers(){
 
         $('.table_new_customer').append('<tr><td class="milieu">'+json_obj.name+'</td>' +
             '                                <td class="milieu">'+json_obj.last_name+'</td>' +
-            '                                <td class="milieu"><form class="form_save_customer_offline"><input type="hidden" name="hidden_customer" value='+client+'><input type="hidden" name="_token" value="'+token+'"><button type="submit" class="btn btn-success btn-sm">Sauvegarder</button><button class="btn btn-danger btn-sm supp_nouv_client" data-key="customer-'+i+'">Supprimer</button></form></td></tr>');
+            '                                <td class="milieu"><form class="form_save_customer_offline" action="'+addCustomerRoute+'" method="post"><input type="hidden" name="hidden_customer" value='+client+'><input type="hidden" name="_token" value="'+token+'"><button type="submit" class="btn btn-success btn-sm">Sauvegarder</button><button class="btn btn-danger btn-sm supp_nouv_client" data-key="customer-'+i+'">Supprimer</button></form></td></tr>');
     }
     $('.save_all_customers').removeClass('hidden');
 
@@ -829,34 +835,39 @@ $('body').on('submit','.form_save_customer_offline', function(e){
         success: function(response) {
             console.log(response);
 
-           /* client=$('.supp_nouv_client').attr('data-key');
-            var nb_c=localStorage.getItem('nb_c');
-            nbr_client=client.substr(9,1);
-            console.log(nbr_client);
+            if(response=='true') {
 
-            for(var i=nbr_client;i<nb_c;i++){
-                var j=i; j++;
-                oldC=localStorage.getItem('customer-'+j);
-
-                newC=localStorage.setItem('customer-'+i,oldC);
-                console.log(oldC);
+                client = $('.supp_nouv_client').attr('data-key');
+                var nb_c = localStorage.getItem('nb_c');
+                nbr_client = client.substr(9, 1);
+                console.log(nbr_client);
+                for (var i = nbr_client; i < nb_c; i++) {
+                    var j = i;
+                    j++;
+                    oldC = localStorage.getItem('customer-' + j);
+                    newC = localStorage.setItem('customer-' + i, oldC);
+                    console.log(oldC);
+                }
+                console.log(i);
+                localStorage.removeItem('customer-' + i);
+                test = nb_c--;
+                localStorage.setItem("nb_c", nb_c--);
+                y.parent().parent().remove();
+                $.ambiance({
+                    message: "Client Ajout&eacute;",
+                    title: "Success!",
+                    type: "success"
+                });
+            }else{
+                $.ambiance({message: "Cin du nouveau client existe d&eacute;ja!",
+                    type: "error",
+                    fade: false});
             }
-            console.log(i);
-            localStorage.removeItem('customer-'+i);
 
-
-            test=nb_c--;
-            localStorage.setItem("nb_c", nb_c--);
-
-
-            y.parent().parent().remove();
-            $.ambiance({message: "Client Ajout&eacute;",
-                title: "Success!",
-                type: "success"});*/
 
         },
         error: function(response) {
-            console.log(res);
+            console.log(response);
         }
     });
 });
@@ -866,6 +877,7 @@ $('body').on('submit','.form_save_customer_offline', function(e){
 // ----------- BOUTON ENREGISTRER "TOUT" NOUVEAU CLIENT OFFLINE ------------ //
 
 $('.save_all_customers').on('click',function(e){
+    console.log('rre');
     e.preventDefault();
     $('.table tbody').each(function(){
         $('.form_save_customer_offline').trigger("submit");
@@ -885,8 +897,8 @@ function getNewQuotations(){
         var devis=localStorage.getItem('devis-'+i);
         var json_obj = $.parseJSON(devis);
 
-        $('.table_new_quotation').append('<tr><td>'+json_obj.name_customer+'</td>' +
-            '                                <td class="milieu">'+json_obj.car_model+'</td>' +
+        $('.table_new_quotation').append('<tr><td class="milieu">'+json_obj.name_customer+'</td>' +
+            '                                <td class="milieu">'+json_obj.car_finition+'</td>' +
             '                                <td class="milieu">'+json_obj.prix_total_voiture+'</td>'+
             '                                <td class="milieu"><form class="form_save_devis_offline" action="'+addQuotationRoute+'" method="post"><input type="hidden" name="hidden_quotation" class="json_dev"><input type="hidden" name="_token" value="'+token+'"><button type="submit" class="btn btn-success btn-sm">Sauvegarder & Envoyer</button><button class="btn btn-danger btn-sm supp_nouv_devis" data-key="devis-'+i+'">Supprimer</button></form></td></tr>');
         $('.table_new_quotation tr').last().find('.json_dev').val(devis);
@@ -901,8 +913,8 @@ function getNewQuotations(){
         var customer_devis = localStorage.getItem('dc-' + j);
         var devis_cust = $.parseJSON(customer_devis);
 
-        $('.table_new_quotation').append('<tr><td>' + devis_cust.clients.name + ' ' + devis_cust.clients.last_name + '</td>' +
-            '                                <td class="milieu">' + devis_cust.devis.car_model + '</td>' +
+        $('.table_new_quotation').append('<tr><td class="milieu"> ' + devis_cust.clients.name + ' ' + devis_cust.clients.last_name + '</td>' +
+            '                                <td class="milieu">' + devis_cust.devis.car_finition + '</td>' +
             '                                <td class="milieu">' + devis_cust.devis.prix_total_voiture + '</td>' +
             '                                <td class="milieu"><form class="form_save_devis_offline" action="' + addQuotationRoute + '" method="post"><input type="hidden" name="hidden_quotation_customer" class="json_dev_cust"><input type="hidden" name="_token" value="' + token + '"><button type="submit" class="btn btn-success btn-sm">Sauvegarder & Envoyer</button><button class="btn btn-danger btn-sm supp_nouv_devis_client" data-key="dc-'+j+'">Supprimer</button></form></td></tr>');
         $('.table_new_quotation tr').last().find('.json_dev_cust').val(customer_devis);
@@ -918,36 +930,69 @@ $('body').on('submit','.form_save_devis_offline', function(e){
     e.preventDefault();
     var x  = $(this).serialize();
     var y =$(this);
-    console.log(x);
+    console.log('ttttttttttttttttttttt');
     $.ajax({
         url: addQuotationRoute,
         type: 'POST',
         data: x,
         dataType: 'text',
         success: function(response) {
-            devis=$('.supp_nouv_devis').attr('data-key');
-            var nb_d=localStorage.getItem('nb_d');
-            nbr_devis=devis.substr(6,1);
-            console.log(nbr_devis);
+           if(response=='d'){
+               devis=$('.supp_nouv_devis').attr('data-key');
+               console.log(devis);
+               var nb_d=localStorage.getItem('nb_d');
+               nbr_devis=devis.substr(6,1);
+               for(var i=nbr_devis;i<nb_d;i++){
+                   var j=i; j++;
+                   oldD=localStorage.getItem('devis-'+j);
 
-            for(var i=nbr_devis;i<nb_d;i++){
-                var j=i; j++;
-                oldD=localStorage.getItem('devis-'+j);
-
-                newD=localStorage.setItem('devis-'+i,oldd);
-                console.log(oldD);
-            }
-            console.log(i);
-            localStorage.removeItem('DEVIS-'+i);
+                   newD=localStorage.setItem('devis-'+i,oldD);
+                   console.log(oldD);
+               }
+               console.log(i);
+               localStorage.removeItem('devis-'+i);
 
 
-            test=nb_d--
-            localStorage.setItem("nb_c", nb_d--);
+               test=nb_d--
+               localStorage.setItem("nb_d", nb_d--);
 
-            y.parent().parent().remove();
-            $.ambiance({message: "Devis Ajout&eacute;",
-                title: "Success!",
-                type: "success"});
+               y.parent().parent().remove();
+               $.ambiance({message: "Devis Ajout&eacute;",
+                   title: "Success!",
+                   type: "success"});
+           }
+            else if(response=='dc'){
+               devis_customer=$('.supp_nouv_devis_client').attr('data-key');
+               console.log(devis_customer);
+               var nb_dc=localStorage.getItem('nb_dc');
+               nbr_devis_customer=devis_customer.substr(3,1);
+               for(var i=nbr_devis_customer;i<nb_dc;i++){
+                   var j=i; j++;
+                   oldDC=localStorage.getItem('dc-'+j);
+
+                   newDC=localStorage.setItem('dc-'+i,oldDC);
+                   console.log(oldDC);
+               }
+               console.log(i);
+               localStorage.removeItem('dc-'+i);
+
+
+               test=nb_dc--
+               localStorage.setItem("nb_dc", nb_dc--);
+
+               y.parent().parent().remove();
+               $.ambiance({message: "Devis et client Ajout&eacute;",
+                   title: "Success!",
+                   type: "success"});
+           }else{
+               $.ambiance({message: "Cin du nouveau client existe d&eacute;ja!",
+                   type: "error",
+                   fade: false});
+           }
+
+     console.log("khalil");
+
+
 
         },
         error: function(response) {
@@ -1038,6 +1083,12 @@ function testConnection(){
 }
 
 
+
+
+
+
+
+
 // *********<!-- NOTIF -->**************/
 var nb_customer=localStorage.getItem('nb_c');
 var nb_devis=localStorage.getItem('nb_d');
@@ -1072,6 +1123,180 @@ var nb_devis_all= nb_devis+nb_dev_cust;
 if(nb_devis_all!=0){
     $('.notif_d').removeClass('hidden').html(''+nb_devis_all+'');
 }
+
+
+
+// ------------------ SELECT ROLE ---------------------- //
+$('.select_role').on('click  change',function(e){
+    e.preventDefault();
+    var id_role=$('#id_role').val();
+        nbr_chk=$('.chk_new_permission').length;
+
+   /* for(var j=1;j<=nbr_chk;j++){
+        $('#'+j).attr('checked',false);
+    }*/
+
+
+
+    var Route=getRolePermission+id_role;
+        $.ajax({
+            url: Route,
+            type: 'GET',
+            data: '',
+            dataType: 'text',
+            success: function (response) {
+                $('.chk_new_permission').prop('checked',false);
+                console.log('true');
+                res=JSON.parse(response);
+                for (var i in res){
+
+                    $('#'+res[i]).prop('checked',true);
+                    }
+                //console.log(res);
+            },
+            error: function (response) {
+
+            }
+
+   });
+
+});
+
+//-------------- CHECKBOX NEX MODEL ---------------------//
+$('.chk_new_model').on('change', function(e) {
+    e.preventDefault();
+    if($(this).prop('checked')){
+        $('#new_model_div').removeClass('hidden');
+        $('.select_model').remove();
+        $('.chk_new_model').val(1);
+    }
+    else{
+        $('#new_model_div').addClass('hidden');
+        $('.select_model').removeClass('hidden');
+        $('.chk_new_model').val(0);
+    }
+});
+
+// ------------------ SELECT Model For TestDrive ---------------------- //
+$('.select_model').on('click change',function(e){
+    e.preventDefault();
+    console.log('changed');
+    var id=$(this).val();
+    var Route=routeFinition+id;
+    $.ajax({
+        url: Route,
+        type: 'GET',
+        data: '',
+        dataType: 'text',
+        success: function (response) {
+            if(response!="[]")
+            {
+                var res=JSON.parse(response);
+                var select=$('.finition_div').removeClass('hidden').find('select');
+                var option ="";
+                for (var i in res)
+                {
+                    option += "<option value='"+i+"'>"+res[i]+"</option>";
+                }
+                select.html(option);
+                $(".inp_debut").attr('disabled',false);
+                $(".inp_fin").attr('disabled',false);
+            }
+            else
+            {
+                $('.finition_div').addClass('hidden');
+                $(".inp_debut").attr('disabled',true);
+                $(".inp_fin").attr('disabled',true);
+            }
+        },
+        error: function (response) {
+
+        }
+
+    });
+
+});
+
+
+
+
+
+
+//-------------------- FRONT JAVASCRIPT ----------------------//
+
+$('.modele_voiture').on('click',function(e){
+    e.preventDefault();
+    $('.modele_voiture').removeClass('rouge_back');
+    $(this).addClass('rouge_back');
+    var finition=$(this).attr('data-finition');
+    var tab =JSON.parse(finition);
+    $('.model_finitions').html('')
+    for (var i in tab)
+    {
+
+        var text=$('.model_finitions').html();
+            $('.model_finitions').html(text+'<a href="#"><div class="finition" data-id="'+tab[i].id+'"><img src="'+image+'/'+tab[i].icon_finition +'"><br><label class="txt_noir">'+tab[i].finition+'</label></div></a>');
+    }
+
+
+
+});
+
+$('.model_finitions').on('click','.finition',function(e){
+    e.preventDefault();
+    $('.finition').removeClass('gris_back');
+    $(this).addClass('gris_back');
+
+});
+
+$('.icone').on('click',function(e) {
+    e.preventDefault();
+    $('.icone').removeClass('gris_back');
+    $(this).addClass('gris_back');
+});
+
+$('.caract').on('click',function(e) {
+    $('.icone').removeClass('gris_back');
+    $(this).addClass('gris_back');
+    var id_car = $('.gris_back').attr('data-id');
+    console.log(id_car);
+    var getCategoriesRoute=routeCategories+id_car;
+    $.ajax({
+        url: getCategoriesRoute,
+        type: 'GET',
+        data: '',
+        dataType: 'text',
+        success: function (response) {
+            console.log(response);
+            var list_cat=JSON.parse(response);
+            console.log(list_cat);
+
+            var cat_car_div='';
+            for (var i in list_cat)
+            {
+
+
+                cat_car_div=cat_car_div+'<div class="col-md-3 categorie_front">' +
+                    '<img src="' + icon +'" class="icon_front" style="float:right; margin-top: 2%; border-radius: 10px;"><div style="margin-top:8%">'+list_cat[i].name+'</div></div>';
+            }
+            $('.cont').html('<div class="row " style="height: 464px;">' +
+                '<img src="' + back_image + '" class="back_front">'+
+                '<div style="    text-align: center; color: #DF1637;  font-size: 24px; margin-top: 3%; font-weight: bold"> Cat&eacute;gories d\'option <br>'+
+                '<img src="' + logo +'" style="height: 50px;  width: 15%;"></div>' +
+                '<div class="row" style="text-align: center; margin-top: 3%; margin-left: 7%;  font-weight: bold;">'
+                + cat_car_div  +
+                '</div></div>');
+
+        }
+    });
+});
+
+
+$('.cont').on('click','.categorie_front',function(e){
+    e.preventDefault();
+
+
+});
 
 
 

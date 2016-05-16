@@ -21,4 +21,6 @@ class TestDriveHour extends Model
     {
         return $query->where('day_id','=', $date)->where('state','=','Active');
     }
+
+
 }

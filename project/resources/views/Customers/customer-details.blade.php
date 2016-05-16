@@ -16,21 +16,23 @@
 @section('content')
 
 
-    <h1>Client: {{$customer->name}} {{$customer->last_name}}</h1><hr>
+    <h1>Client: {{$customer->name}} {{$customer->last_name}} <a href="{{route('editcustomer',$customer->id)}}"><button class="btn btn-success droite" type="submit">Modifier</button></a></h1><hr>
         <ul>
-            <table>
-            <tr><td><li><strong>Cin Client:</strong></li></td>   <td>{{$customer->cin}}</td></tr>
-                <tr><td><li><strong>Adresse Client:</strong></li></td>   <td>{{$customer->adress}}</td></tr>
-                <tr><td><li><strong>Email Client:</strong></li></td>   <td>{{$customer->mail}}</td></tr>
-                <tr><td><li><strong>Fonction Client:</strong></li></td>   <td>{{$customer->function}}</td></tr>
-                <tr><td><li><strong>T&eacute;l&eacute;phone Client:</strong></li></td>   <td>{{$customer->phone}}</td></tr>
-                <tr><td><li><strong>Voiture Client:</strong></li></td>   <td>{{$customer->car}}</td></tr>
+            <table border="1"  cellpadding="10" style="text-align: center">
+            <tr><td style="width:60%; height: 45px;"><strong>Cin Client:</strong></td>   <td style="width:60%">{{$customer->cin}}</td></tr>
+                <tr><td style="width:60%; height: 45px;"><strong>Adresse Client:</strong></td>   <td>{{$customer->adress}}</td></tr>
+                <tr><td style="width:60%; height: 45px;"><strong>Email Client:</strong></td>   <td>{{$customer->mail}}</td></tr>
+                <tr><td style="width:60%; height: 45px;"><strong>Fonction Client:</strong></td>   <td>{{$customer->function}}</td></tr>
+                <tr><td style="width:60%; height: 45px;"><strong>T&eacute;l&eacute;phone Client:</strong></td>   <td>{{$customer->phone}}</td></tr>
+                <tr><td style="width:60%; height: 45px;"><strong>Voiture Client:</strong></td>   <td>{{$customer->car}}</td></tr>
             </table>
         </ul>
 
     <div>
-    <a href="{{route('editcustomer',$customer->id)}}"><button class="btn btn-success droite" type="submit">Modifier</button></a>
+
     </div>
 
 
 @stop
+
+

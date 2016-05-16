@@ -9,6 +9,7 @@ use DateTime;
 use App\TestDriveDay;
 use App\TestDriveHour;
 use App\Customer;
+use App\Modele;
 class TestDrivesController extends Controller {
     /**
      * Display a listing of the resource.
@@ -19,14 +20,19 @@ class TestDrivesController extends Controller {
         //
         //dd($this->User()->id);
         $cars = array();
+        $models=array();
         $car = Car::all();
         $title = "Ajout Disponibilité";
         foreach ($car as $c) {
             $cars[$c->id] = $c->model;
         }
+         $model = Modele::all();
+         foreach ($model as $m) {
+            $models[$m->id] = $m->name;
+        }
         $date = \Carbon\Carbon::today();
         $date = $date->format('Y-m-d');
-        return view('TestDrives/disponibility-test-drive', ['title' => $title, 'cars' => $cars, 'date' => $date]);
+        return view('TestDrives/disponibility-test-drive', ['title' => $title, 'cars' => $cars, 'date' => $date, 'models' => $models]);
     }
     /**
      * Show the form for creating a new resource.
@@ -68,6 +74,9 @@ class TestDrivesController extends Controller {
             $d = date("Y-m-d", $date);
             $datedebut = new DateTime($d);
         }
+
+
+        return redirect(route('Calendar',$car));
         //get day name
         /* $date = '2016/03/03'; 
           $day = date('l', strtotime($date));
@@ -208,9 +217,19 @@ class TestDrivesController extends Controller {
      */
     public function destroy(Request $request ,$id) {
         $dayid=$request->id_day;
-        $day=TestDriveDay::find($dayid);
-        $day->delete();
-        return redirect(route('Calendar',$id));
+
+        $hour=TestDriveHour::ListHeureIndispo($dayid)->where('customer_id','!=',1)->get();
+        if(!isset($hour[0]))
+            {$day=TestDriveDay::find($dayid);
+            $day->delete();
+            return redirect(route('Calendar',$id));
+        }
+        else
+        {
+            $test=1;
+            return redirect(route('Calendar',$id));
+        }
+
     }
 
 
